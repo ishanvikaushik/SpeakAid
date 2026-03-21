@@ -9,10 +9,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
 
 public class RoutinePlayerActivity extends AppCompatActivity {
 
     TextView txtStep;
+    TextToSpeech tts;
     TextView txtProgress;
     TextView txtTransition;
     Button btnPrev;
@@ -70,6 +73,12 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                 showStep();
             }
         });
+
+        tts = new TextToSpeech(this, status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                tts.setLanguage(Locale.US);
+            }
+        });
     }
     void startTransition(int nextIndex, String nextStep) {
 
@@ -97,9 +106,24 @@ public class RoutinePlayerActivity extends AppCompatActivity {
     }
 
     void showStep() {
-        txtStep.setText(steps.get(currentStep));
+        String currentText = steps.get(currentStep);
+
+        txtStep.setText(currentText);
         txtProgress.setText("Step " + (currentStep + 1) + " / " + steps.size());
 
         btnPrev.setEnabled(currentStep != 0);
+
+        // Speak step
+        if (tts != null) {
+            tts.speak(currentText, TextToSpeech.QUEUE_FLUSH, null, null);
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 }
