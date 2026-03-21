@@ -18,6 +18,7 @@ public class RoutineListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routine_list);
 
+        setTitle("Mini Routines");
         recyclerView = findViewById(R.id.recyclerViewRoutines);
 
         routineList = new ArrayList<>();
@@ -35,6 +36,17 @@ public class RoutineListActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        //for back navigation
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+    //for back navigation
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
 }

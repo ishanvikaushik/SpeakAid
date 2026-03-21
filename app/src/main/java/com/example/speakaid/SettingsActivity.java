@@ -16,6 +16,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+
+        setTitle("Settings");
         switchSound = findViewById(R.id.switchSound);
         switchVibration = findViewById(R.id.switchVibration);
         switchMotion = findViewById(R.id.switchMotion);
@@ -39,5 +41,16 @@ public class SettingsActivity extends AppCompatActivity {
         switchMotion.setOnCheckedChangeListener((buttonView, isChecked) ->
                 prefs.edit().putBoolean("motion", isChecked).apply()
         );
+
+        //for back navigation
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+    //for back navigation
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

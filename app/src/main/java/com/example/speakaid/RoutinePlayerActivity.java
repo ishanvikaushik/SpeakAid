@@ -37,6 +37,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routine_player);
 
+
         routineId = getIntent().getIntExtra("routineId", -1);
 
         txtTransition=findViewById(R.id.txtTransition);
@@ -113,6 +114,10 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                 vibrator.vibrate(200);
             }
         }
+        //for back navigation
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
     void startTransition(int nextIndex, String nextStep) {
 
@@ -161,5 +166,11 @@ public class RoutinePlayerActivity extends AppCompatActivity {
             tts.shutdown();
         }
         super.onDestroy();
+    }
+    //for back navigation
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }
