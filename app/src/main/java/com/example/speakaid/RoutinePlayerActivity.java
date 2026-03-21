@@ -14,6 +14,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
 
     TextView txtStep;
     TextView txtProgress;
+    TextView txtTransition;
     Button btnPrev;
     int routineId;
     Button btnNext;
@@ -28,6 +29,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
 
         routineId = getIntent().getIntExtra("routineId", -1);
 
+        txtTransition=findViewById(R.id.txtTransition);
         txtProgress = findViewById(R.id.txtProgress);
         btnPrev = findViewById(R.id.btnPrev);
         txtStep = findViewById(R.id.txtStep);
@@ -47,10 +49,14 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         showStep();
 
         btnNext.setOnClickListener(v -> {
-            currentStep++;
 
-            if (currentStep < steps.size()) {
-                showStep();
+            if (currentStep < steps.size() - 1) {
+
+                int nextStepIndex = currentStep + 1;
+                String nextStep = steps.get(nextStepIndex);
+
+                startTransition(nextStepIndex, nextStep);
+
             } else {
                 txtStep.setText("Routine Completed ");
                 txtProgress.setText("");
@@ -64,6 +70,30 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                 showStep();
             }
         });
+    }
+    void startTransition(int nextIndex, String nextStep) {
+
+        new Thread(() -> {
+            for (int i = 3; i >= 1; i--) {
+                int finalI = i;
+                runOnUiThread(() -> {
+                    txtTransition.setText("Next: " + nextStep + " in " + finalI);
+                });
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            runOnUiThread(() -> {
+                currentStep = nextIndex;
+                txtTransition.setText("");
+                showStep();
+            });
+
+        }).start();
     }
 
     void showStep() {

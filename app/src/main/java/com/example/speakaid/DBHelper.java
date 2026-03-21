@@ -64,4 +64,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 null
         );
     }
+    public boolean isStepTableEmpty() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM Step", null);
+
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        cursor.close();
+
+        return count == 0;
+    }
 }
