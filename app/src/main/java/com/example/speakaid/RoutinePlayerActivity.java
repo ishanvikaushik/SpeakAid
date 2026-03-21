@@ -15,6 +15,7 @@ import java.util.Locale;
 public class RoutinePlayerActivity extends AppCompatActivity {
 
     TextView txtStep;
+    boolean isCompleted = false;
     TextToSpeech tts;
     TextView txtProgress;
     TextView txtTransition;
@@ -49,8 +50,6 @@ public class RoutinePlayerActivity extends AppCompatActivity {
             steps.add(stepTitle);
         }
 
-        showStep();
-
         btnNext.setOnClickListener(v -> {
 
             if (currentStep < steps.size() - 1) {
@@ -64,10 +63,21 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                 txtStep.setText("Routine Completed ");
                 txtProgress.setText("");
                 btnNext.setEnabled(false);
+
+                isCompleted=true;
             }
         });
 
         btnPrev.setOnClickListener(v -> {
+
+            if (isCompleted) {
+                // go back to LAST step first
+                isCompleted = false;
+                btnNext.setEnabled(true);
+                showStep();
+                return;
+            }
+
             if (currentStep > 0) {
                 currentStep--;
                 showStep();
@@ -77,6 +87,9 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         tts = new TextToSpeech(this, status -> {
             if (status == TextToSpeech.SUCCESS) {
                 tts.setLanguage(Locale.US);
+
+                // Speak first step AFTER TTS ready
+                showStep();
             }
         });
     }
