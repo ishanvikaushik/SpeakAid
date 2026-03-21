@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Switch
+        android:id="@+id/switchSound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sound (Text-to-Speech)"
+        android:checked="true"/>
+
+    <Switch
+        android:id="@+id/switchVibration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vibration"
+        android:checked="false"/>
+
+    <Switch
+        android:id="@+id/switchMotion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reduce Motion"
+        android:checked="false"/>
+
+</LinearLayout>

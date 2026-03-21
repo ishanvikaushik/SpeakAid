@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     Button btnRoutines, btnScripts;
+    Button btnSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         }
         btnRoutines = findViewById(R.id.btnRoutines);
         btnScripts = findViewById(R.id.btnScripts);
+        btnSettings=findViewById(R.id.btnSettings);
 
         btnRoutines.setOnClickListener(v -> {
             startActivity(new Intent(this, RoutineListActivity.class));
@@ -51,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
         btnScripts.setOnClickListener(v -> {
             startActivity(new Intent(this, ScriptListActivity.class));
+        });
+        btnSettings.setOnClickListener(v -> {
+            startActivity(new Intent(this, SettingsActivity.class));
         });
     }
 }

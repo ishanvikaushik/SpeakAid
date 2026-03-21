@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
@@ -26,6 +27,8 @@ public class RoutinePlayerActivity extends AppCompatActivity {
     List<String> steps;
     int currentStep = 0;
 
+    SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +41,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         btnPrev = findViewById(R.id.btnPrev);
         txtStep = findViewById(R.id.txtStep);
         btnNext = findViewById(R.id.btnNext);
+        prefs = getSharedPreferences("settings", MODE_PRIVATE);
 
         //  steps
         steps = new ArrayList<>();
@@ -128,7 +132,9 @@ public class RoutinePlayerActivity extends AppCompatActivity {
 
         // Speak step
         if (tts != null) {
-            tts.speak(currentText, TextToSpeech.QUEUE_FLUSH, null, null);
+            if (prefs.getBoolean("sound", true)) {
+                tts.speak(currentText, TextToSpeech.QUEUE_FLUSH, null, null);
+            }
         }
     }
     @Override
