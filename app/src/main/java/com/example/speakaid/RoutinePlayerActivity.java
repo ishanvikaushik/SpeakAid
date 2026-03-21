@@ -12,6 +12,7 @@ import java.util.List;
 public class RoutinePlayerActivity extends AppCompatActivity {
 
     TextView txtStep;
+    int routineId;
     Button btnNext;
 
     List<String> steps;
@@ -22,15 +23,30 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routine_player);
 
+        routineId = getIntent().getIntExtra("routineId", -1);
+
         txtStep = findViewById(R.id.txtStep);
         btnNext = findViewById(R.id.btnNext);
 
-        // Dummy steps
+        //  steps
         steps = new ArrayList<>();
-        steps.add("Wake up");
-        steps.add("Brush teeth");
-        steps.add("Get dressed");
-        steps.add("Eat breakfast");
+
+        if (routineId == 1) {
+            steps.add("Wake up");
+            steps.add("Brush teeth");
+            steps.add("Get dressed");
+            steps.add("Eat breakfast");
+        }
+        else if (routineId == 2) {
+            steps.add("Pack school bag");
+            steps.add("Wear uniform");
+            steps.add("Check homework");
+        }
+        else if (routineId == 3) {
+            steps.add("Brush teeth");
+            steps.add("Change clothes");
+            steps.add("Go to bed");
+        }
 
         showStep();
 
@@ -40,7 +56,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
             if (currentStep < steps.size()) {
                 showStep();
             } else {
-                txtStep.setText("Routine Completed ✅");
+                txtStep.setText("Routine Completed ");
                 btnNext.setEnabled(false);
             }
         });
