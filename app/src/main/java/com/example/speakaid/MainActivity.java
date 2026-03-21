@@ -17,6 +17,18 @@ public class MainActivity extends AppCompatActivity {
 
         DBHelper dbHelper = new DBHelper(this);
         dbHelper.getWritableDatabase();
+        DBHelper db = new DBHelper(this);
+
+// Insert only if empty (basic check)
+        db.insertStep(1, "Wake up", 1);
+        db.insertStep(1, "Brush teeth", 2);
+        db.insertStep(1, "Get dressed", 3);
+
+        db.insertStep(2, "Pack school bag", 1);
+        db.insertStep(2, "Wear uniform", 2);
+
+        db.insertStep(3, "Brush teeth", 1);
+        db.insertStep(3, "Go to bed", 2);
 
         btnRoutines = findViewById(R.id.btnRoutines);
         btnScripts = findViewById(R.id.btnScripts);

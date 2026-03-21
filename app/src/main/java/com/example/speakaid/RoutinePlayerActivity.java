@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,21 +32,12 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         //  steps
         steps = new ArrayList<>();
 
-        if (routineId == 1) {
-            steps.add("Wake up");
-            steps.add("Brush teeth");
-            steps.add("Get dressed");
-            steps.add("Eat breakfast");
-        }
-        else if (routineId == 2) {
-            steps.add("Pack school bag");
-            steps.add("Wear uniform");
-            steps.add("Check homework");
-        }
-        else if (routineId == 3) {
-            steps.add("Brush teeth");
-            steps.add("Change clothes");
-            steps.add("Go to bed");
+        DBHelper db = new DBHelper(this);
+        Cursor cursor = db.getSteps(routineId);
+
+        while (cursor.moveToNext()) {
+            String stepTitle = cursor.getString(2); // title column
+            steps.add(stepTitle);
         }
 
         showStep();
