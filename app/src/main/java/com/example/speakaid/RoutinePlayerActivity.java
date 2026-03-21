@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import android.speech.tts.TextToSpeech;
 import java.util.Locale;
+import android.os.Vibrator;
+import android.os.VibrationEffect;
 
 public class RoutinePlayerActivity extends AppCompatActivity {
 
@@ -28,6 +30,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
     int currentStep = 0;
 
     SharedPreferences prefs;
+    Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         txtStep = findViewById(R.id.txtStep);
         btnNext = findViewById(R.id.btnNext);
         prefs = getSharedPreferences("settings", MODE_PRIVATE);
-
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         //  steps
         steps = new ArrayList<>();
 
@@ -61,7 +64,13 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                 int nextStepIndex = currentStep + 1;
                 String nextStep = steps.get(nextStepIndex);
 
-                startTransition(nextStepIndex, nextStep);
+                if (prefs.getBoolean("motion", false)) {
+                    //  Reduced motion → skip countdown
+                    currentStep = nextStepIndex;
+                    showStep();
+                } else {
+                    startTransition(nextStepIndex, nextStep);
+                }
 
             } else {
                 txtStep.setText("Routine Completed ");
@@ -96,6 +105,14 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                 showStep();
             }
         });
+
+        if (prefs.getBoolean("vibration", false)) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                vibrator.vibrate(200);
+            }
+        }
     }
     void startTransition(int nextIndex, String nextStep) {
 
