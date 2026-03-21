@@ -13,6 +13,8 @@ import java.util.List;
 public class RoutinePlayerActivity extends AppCompatActivity {
 
     TextView txtStep;
+    TextView txtProgress;
+    Button btnPrev;
     int routineId;
     Button btnNext;
 
@@ -26,6 +28,8 @@ public class RoutinePlayerActivity extends AppCompatActivity {
 
         routineId = getIntent().getIntExtra("routineId", -1);
 
+        txtProgress = findViewById(R.id.txtProgress);
+        btnPrev = findViewById(R.id.btnPrev);
         txtStep = findViewById(R.id.txtStep);
         btnNext = findViewById(R.id.btnNext);
 
@@ -49,12 +53,23 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                 showStep();
             } else {
                 txtStep.setText("Routine Completed ");
+                txtProgress.setText("");
                 btnNext.setEnabled(false);
+            }
+        });
+
+        btnPrev.setOnClickListener(v -> {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep();
             }
         });
     }
 
     void showStep() {
         txtStep.setText(steps.get(currentStep));
+        txtProgress.setText("Step " + (currentStep + 1) + " / " + steps.size());
+
+        btnPrev.setEnabled(currentStep != 0);
     }
 }
