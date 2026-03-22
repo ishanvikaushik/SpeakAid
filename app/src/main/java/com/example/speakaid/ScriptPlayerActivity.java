@@ -10,10 +10,18 @@ import android.speech.tts.TextToSpeech;
 import android.widget.Button;
 import android.widget.TextView;
 
+import nl.dionsegijn.konfetti.xml.KonfettiView;
+import nl.dionsegijn.konfetti.core.Party;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class ScriptPlayerActivity extends AppCompatActivity {
 
@@ -27,6 +35,8 @@ public class ScriptPlayerActivity extends AppCompatActivity {
     TextToSpeech tts;
     SharedPreferences prefs;
     Vibrator vibrator;
+
+    KonfettiView konfettiView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +55,7 @@ public class ScriptPlayerActivity extends AppCompatActivity {
         txtTransition = findViewById(R.id.txtTransition);
         btnNext = findViewById(R.id.btnNext);
         btnPrev = findViewById(R.id.btnPrev);
+        konfettiView = findViewById(R.id.confettiView);
 
         prefs = getSharedPreferences("settings", MODE_PRIVATE);
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
@@ -53,12 +64,12 @@ public class ScriptPlayerActivity extends AppCompatActivity {
 
         steps = new ArrayList<>();
 
-        DBHelper db = new DBHelper(this);
-        Cursor cursor = db.getScriptSteps(scriptId);
-
-        while (cursor.moveToNext()) {
-            String step = cursor.getString(2);
-            steps.add(step);
+        try (DBHelper db = new DBHelper(this);
+             Cursor cursor = db.getScriptSteps(scriptId)) {
+            while (cursor.moveToNext()) {
+                String step = cursor.getString(2);
+                steps.add(step);
+            }
         }
 
         //  TTS init
@@ -70,6 +81,7 @@ public class ScriptPlayerActivity extends AppCompatActivity {
         });
 
         btnNext.setOnClickListener(v -> {
+            if (steps.isEmpty()) return;
 
             if (currentStep < steps.size() - 1) {
 
@@ -88,6 +100,19 @@ public class ScriptPlayerActivity extends AppCompatActivity {
                 txtProgress.setText("");
                 btnNext.setEnabled(false);
                 isCompleted = true;
+
+                //  CONFETTI
+                if (konfettiView != null) {
+                    EmitterConfig emitterConfig = new Emitter(5L, TimeUnit.SECONDS).perSecond(30);
+                    konfettiView.start(
+                            new PartyFactory(emitterConfig)
+                                    .spread(360)
+                                    .setSpeedBetween(5f, 10f)
+                                    .timeToLive(2000L)
+                                    .colors(Arrays.asList(0xFFFFC107, 0xFF4CAF50, 0xFF2196F3))
+                                    .build()
+                    );
+                }
             }
         });
 
@@ -108,6 +133,14 @@ public class ScriptPlayerActivity extends AppCompatActivity {
     }
 
     void showStep() {
+        if (steps.isEmpty()) {
+            txtStep.setText("No steps found for this script.");
+            txtProgress.setText("");
+            btnNext.setEnabled(false);
+            btnPrev.setEnabled(false);
+            return;
+        }
+
         String text = steps.get(currentStep);
 
         txtStep.setText(text);
