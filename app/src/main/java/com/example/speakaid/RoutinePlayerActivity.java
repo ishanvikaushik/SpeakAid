@@ -9,11 +9,19 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import android.speech.tts.TextToSpeech;
 import java.util.Locale;
 import android.os.Vibrator;
 import android.os.VibrationEffect;
+
+import nl.dionsegijn.konfetti.xml.KonfettiView;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
 
 public class RoutinePlayerActivity extends AppCompatActivity {
 
@@ -32,6 +40,8 @@ public class RoutinePlayerActivity extends AppCompatActivity {
     SharedPreferences prefs;
     Vibrator vibrator;
 
+    KonfettiView konfettiView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +55,8 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         btnPrev = findViewById(R.id.btnPrev);
         txtStep = findViewById(R.id.txtStep);
         btnNext = findViewById(R.id.btnNext);
+        konfettiView = findViewById(R.id.confettiView);
+
         prefs = getSharedPreferences("settings", MODE_PRIVATE);
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         //  steps
@@ -77,8 +89,20 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                 txtStep.setText("Routine Completed ");
                 txtProgress.setText("");
                 btnNext.setEnabled(false);
-
                 isCompleted=true;
+
+                // CONFETTI
+                if (konfettiView != null) {
+                    EmitterConfig emitterConfig = new Emitter(5L, TimeUnit.SECONDS).perSecond(30);
+                    konfettiView.start(
+                            new PartyFactory(emitterConfig)
+                                    .spread(360)
+                                    .setSpeedBetween(5f, 10f)
+                                    .timeToLive(2000L)
+                                    .colors(Arrays.asList(0xFFFFC107, 0xFF4CAF50, 0xFF2196F3))
+                                    .build()
+                    );
+                }
             }
         });
 
@@ -145,6 +169,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
     }
 
     void showStep() {
+        if (steps.isEmpty()) return;
         String currentText = steps.get(currentStep);
 
         txtStep.setText(currentText);
