@@ -2,13 +2,19 @@ package com.example.speakaid;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SettingsActivity extends AppCompatActivity {
 
     Switch switchSound, switchVibration, switchMotion;
+    Button btnChangePasscode;
     SharedPreferences prefs;
 
     @Override
@@ -16,11 +22,11 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-
         setTitle("Settings");
         switchSound = findViewById(R.id.switchSound);
         switchVibration = findViewById(R.id.switchVibration);
         switchMotion = findViewById(R.id.switchMotion);
+        btnChangePasscode = findViewById(R.id.btnChangePasscode);
 
         prefs = getSharedPreferences("settings", MODE_PRIVATE);
 
@@ -42,12 +48,38 @@ public class SettingsActivity extends AppCompatActivity {
                 prefs.edit().putBoolean("motion", isChecked).apply()
         );
 
-        //for back navigation
+        btnChangePasscode.setOnClickListener(v -> showChangePasscodeDialog());
+
+        // for back navigation
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
-    //for back navigation
+
+    private void showChangePasscodeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Set New Caregiver Passcode");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        input.setHint("Enter 4-digit numeric passcode");
+        builder.setView(input);
+
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String newPasscode = input.getText().toString().trim();
+            if (newPasscode.length() >= 4) {
+                prefs.edit().putString("passcode", newPasscode).apply();
+                Toast.makeText(this, "Passcode updated successfully", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Passcode must be at least 4 digits", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+    // for back navigation
     @Override
     public boolean onSupportNavigateUp() {
         finish();

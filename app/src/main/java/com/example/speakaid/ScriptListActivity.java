@@ -14,6 +14,7 @@ public class ScriptListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<Script> scriptList;
     ScriptAdapter adapter;
+    DBHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,21 +30,30 @@ public class ScriptListActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerScripts);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        db = new DBHelper(this);
 
+        loadScripts();
+    }
+
+    private void loadScripts() {
         scriptList = new ArrayList<>();
-
-        DBHelper db = new DBHelper(this);
-        Cursor cursor = db.getScripts();
-
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String title = cursor.getString(1);
-
-            scriptList.add(new Script(id, title));
+        try (Cursor cursor = db.getScripts()) {
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                scriptList.add(new Script(id, title));
+            }
         }
 
         adapter = new ScriptAdapter(this, scriptList);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh the list when returning to this activity
+        loadScripts();
     }
 
     @Override

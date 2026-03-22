@@ -27,6 +27,12 @@
             android:name=".RoutineListActivity"
             android:exported="false" />
         <activity
+            android:name=".ParentModeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddCustomActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

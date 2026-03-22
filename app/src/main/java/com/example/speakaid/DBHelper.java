@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -44,32 +45,45 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS Routine");
         db.execSQL("DROP TABLE IF EXISTS Step");
+        db.execSQL("DROP TABLE IF EXISTS Script");
+        db.execSQL("DROP TABLE IF EXISTS ScriptStep");
         onCreate(db);
     }
 
     // 🔹 Insert Routine
-    public void insertRoutine(String title) {
+    public long insertRoutine(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("INSERT INTO Routine (title) VALUES ('" + title + "')");
+        ContentValues values = new ContentValues();
+        values.put("title", title);
+        return db.insert("Routine", null, values);
     }
 
     // 🔹 Insert Step
-    public void insertStep(int routineId, String title, int order) {
+    public void insertStep(long routineId, String title, int order) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("INSERT INTO Step (routineId, title, stepOrder) VALUES (" +
-                routineId + ", '" + title + "', " + order + ")");
+        ContentValues values = new ContentValues();
+        values.put("routineId", routineId);
+        values.put("title", title);
+        values.put("stepOrder", order);
+        db.insert("Step", null, values);
     }
 
-    public void insertScript(String title) {
+    public long insertScript(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("INSERT INTO Script (title) VALUES ('" + title + "')");
+        ContentValues values = new ContentValues();
+        values.put("title", title);
+        return db.insert("Script", null, values);
     }
 
-    public void insertScriptStep(int scriptId, String title, int order) {
+    public void insertScriptStep(long scriptId, String title, int order) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("INSERT INTO ScriptStep (scriptId, title, stepOrder) VALUES (" +
-                scriptId + ", '" + title + "', " + order + ")");
+        ContentValues values = new ContentValues();
+        values.put("scriptId", scriptId);
+        values.put("title", title);
+        values.put("stepOrder", order);
+        db.insert("ScriptStep", null, values);
     }
+
     // 🔹 Get all routines
     public Cursor getRoutines() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -84,10 +98,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 null
         );
     }
+
     public Cursor getScripts() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM Script", null);
     }
+
     public Cursor getScriptSteps(int scriptId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery(
@@ -95,14 +111,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 null
         );
     }
+
     public boolean isStepTableEmpty() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM Step", null);
-
         cursor.moveToFirst();
         int count = cursor.getInt(0);
         cursor.close();
-
         return count == 0;
     }
 }

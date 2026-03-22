@@ -1,22 +1,28 @@
 package com.example.speakaid;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnRoutines, btnScripts;
-    Button btnSettings;
+    Button btnRoutines, btnScripts, btnSettings, btnParentMode;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        prefs = getSharedPreferences("settings", MODE_PRIVATE);
         DBHelper db = new DBHelper(this);
 
         // Check if data exists, if not, seed it
@@ -29,21 +35,41 @@ public class MainActivity extends AppCompatActivity {
         btnRoutines = findViewById(R.id.btnRoutines);
         btnScripts = findViewById(R.id.btnScripts);
         btnSettings = findViewById(R.id.btnSettings);
+        btnParentMode = findViewById(R.id.btnParentMode);
 
-        btnRoutines.setOnClickListener(v -> {
-            startActivity(new Intent(this, RoutineListActivity.class));
-        });
+        btnRoutines.setOnClickListener(v -> startActivity(new Intent(this, RoutineListActivity.class)));
+        btnScripts.setOnClickListener(v -> startActivity(new Intent(this, ScriptListActivity.class)));
+        btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
 
-        btnScripts.setOnClickListener(v -> {
-            startActivity(new Intent(this, ScriptListActivity.class));
+        btnParentMode.setOnClickListener(v -> showPasscodeDialog());
+    }
+
+    private void showPasscodeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter Caregiver Passcode");
+
+        // Get the saved passcode or use default "1234"
+        String savedPasscode = prefs.getString("passcode", "1234");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        input.setHint("Enter passcode");
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String enteredPasscode = input.getText().toString();
+            if (enteredPasscode.equals(savedPasscode)) {
+                startActivity(new Intent(MainActivity.this, ParentModeActivity.class));
+            } else {
+                Toast.makeText(MainActivity.this, "Incorrect Passcode", Toast.LENGTH_SHORT).show();
+            }
         });
-        btnSettings.setOnClickListener(v -> {
-            startActivity(new Intent(this, SettingsActivity.class));
-        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 
     private void seedData(DBHelper db) {
-        // Routines
         db.insertRoutine("Morning Routine");
         db.insertRoutine("School Routine");
         db.insertRoutine("Night Routine");
@@ -58,17 +84,14 @@ public class MainActivity extends AppCompatActivity {
         db.insertStep(3, "Brush teeth", 1);
         db.insertStep(3, "Go to bed", 2);
 
-        // Scripts
         db.insertScript("Say Hello");
         db.insertScript("Ask for Help");
 
-        // Say Hello (id = 1)
         db.insertScriptStep(1, "Look at the person", 1);
         db.insertScriptStep(1, "Smile if comfortable", 2);
         db.insertScriptStep(1, "Say hello", 3);
         db.insertScriptStep(1, "Ask how they are", 4);
 
-        // Ask for Help (id = 2)
         db.insertScriptStep(2, "Look at the person", 1);
         db.insertScriptStep(2, "Get their attention", 2);
         db.insertScriptStep(2, "Ask politely", 3);
