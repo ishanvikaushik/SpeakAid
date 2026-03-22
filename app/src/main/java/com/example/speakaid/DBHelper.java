@@ -28,6 +28,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 "routineId INTEGER, " +
                 "title TEXT, " +
                 "stepOrder INTEGER)");
+
+        db.execSQL("CREATE TABLE Script (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "title TEXT)");
+
+        db.execSQL("CREATE TABLE ScriptStep (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "scriptId INTEGER, " +
+                "title TEXT, " +
+                "stepOrder INTEGER)");
     }
 
     @Override
@@ -50,6 +60,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 routineId + ", '" + title + "', " + order + ")");
     }
 
+    public void insertScript(String title) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO Script (title) VALUES ('" + title + "')");
+    }
+
+    public void insertScriptStep(int scriptId, String title, int order) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO ScriptStep (scriptId, title, stepOrder) VALUES (" +
+                scriptId + ", '" + title + "', " + order + ")");
+    }
     // 🔹 Get all routines
     public Cursor getRoutines() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -61,6 +81,17 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery(
                 "SELECT * FROM Step WHERE routineId = " + routineId + " ORDER BY stepOrder",
+                null
+        );
+    }
+    public Cursor getScripts() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM Script", null);
+    }
+    public Cursor getScriptSteps(int scriptId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery(
+                "SELECT * FROM ScriptStep WHERE scriptId = " + scriptId + " ORDER BY stepOrder",
                 null
         );
     }

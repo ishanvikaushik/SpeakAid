@@ -1,11 +1,19 @@
 package com.example.speakaid;
 
 public class Script {
-    public int id;
-    public String title;
+    int id;
+    String title;
 
     public Script(int id, String title) {
         this.id = id;
         this.title = title;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }
