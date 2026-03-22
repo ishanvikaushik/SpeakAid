@@ -35,7 +35,7 @@ public class ScriptPlayerActivity extends AppCompatActivity {
 
         setTitle("Script");
 
-        // 🔙 Back button
+        //  Back button
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -61,7 +61,7 @@ public class ScriptPlayerActivity extends AppCompatActivity {
             steps.add(step);
         }
 
-        // 🔊 TTS init
+        //  TTS init
         tts = new TextToSpeech(this, status -> {
             if (status == TextToSpeech.SUCCESS) {
                 tts.setLanguage(Locale.US);
@@ -84,7 +84,7 @@ public class ScriptPlayerActivity extends AppCompatActivity {
                 }
 
             } else {
-                txtStep.setText("Script Completed ✅");
+                txtStep.setText("Script Completed ");
                 txtProgress.setText("");
                 btnNext.setEnabled(false);
                 isCompleted = true;
@@ -115,12 +115,12 @@ public class ScriptPlayerActivity extends AppCompatActivity {
 
         btnPrev.setEnabled(currentStep != 0);
 
-        // 🔊 TTS
+        //  TTS
         if (prefs.getBoolean("sound", true)) {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
         }
 
-        // 📳 Vibration
+        //  Vibration
         if (prefs.getBoolean("vibration", false)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
