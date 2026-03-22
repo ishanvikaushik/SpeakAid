@@ -2,31 +2,33 @@ package com.example.speakaid;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
-import android.widget.Button;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import nl.dionsegijn.konfetti.xml.KonfettiView;
-import nl.dionsegijn.konfetti.core.Party;
-import nl.dionsegijn.konfetti.core.PartyFactory;
-import nl.dionsegijn.konfetti.core.emitter.Emitter;
-import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
+
 public class ScriptPlayerActivity extends AppCompatActivity {
 
-    TextView txtStep, txtProgress, txtTransition;
-    Button btnNext, btnPrev;
+    TextView txtStep, txtProgress, txtTransition, btnNextText;
+    FrameLayout btnNextFrame, btnPrevFrame;
+    LinearProgressIndicator progressIndicator;
+    ImageView imgStep, btnClose;
 
     ArrayList<String> steps;
     int currentStep = 0;
@@ -34,158 +36,135 @@ public class ScriptPlayerActivity extends AppCompatActivity {
 
     TextToSpeech tts;
     SharedPreferences prefs;
-    Vibrator vibrator;
-
     KonfettiView konfettiView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_script_player);
-
-        setTitle("Script");
-
-        //  Back button
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
 
         txtStep = findViewById(R.id.txtStep);
         txtProgress = findViewById(R.id.txtProgress);
         txtTransition = findViewById(R.id.txtTransition);
-        btnNext = findViewById(R.id.btnNext);
-        btnPrev = findViewById(R.id.btnPrev);
+        btnNextFrame = findViewById(R.id.btnNextFrame);
+        btnNextText = findViewById(R.id.btnNextText);
+        btnPrevFrame = findViewById(R.id.btnPrevFrame);
+        progressIndicator = findViewById(R.id.progressIndicator);
+        imgStep = findViewById(R.id.imgStep);
+        btnClose = findViewById(R.id.btnClose);
         konfettiView = findViewById(R.id.confettiView);
 
         prefs = getSharedPreferences("settings", MODE_PRIVATE);
-        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-
         int scriptId = getIntent().getIntExtra("scriptId", -1);
 
         steps = new ArrayList<>();
-
         try (DBHelper db = new DBHelper(this);
              Cursor cursor = db.getScriptSteps(scriptId)) {
             while (cursor.moveToNext()) {
-                String step = cursor.getString(2);
-                steps.add(step);
+                steps.add(cursor.getString(2));
             }
         }
 
-        //  TTS init
+        btnNextFrame.setOnClickListener(v -> {
+            if (isCompleted) {
+                finish();
+                return;
+            }
+
+            if (steps.isEmpty()) return;
+            if (currentStep < steps.size() - 1) {
+                int nextIndex = currentStep + 1;
+                if (prefs.getBoolean("motion", false)) {
+                    currentStep = nextIndex;
+                    showStep();
+                } else {
+                    startTransition(nextIndex, steps.get(nextIndex));
+                }
+            } else {
+                completeScript();
+            }
+        });
+
+        btnPrevFrame.setOnClickListener(v -> {
+            if (isCompleted) {
+                isCompleted = false;
+                btnNextText.setText("NEXT");
+                showStep();
+            } else if (currentStep > 0) {
+                currentStep--;
+                showStep();
+            }
+        });
+
+        btnClose.setOnClickListener(v -> finish());
+
         tts = new TextToSpeech(this, status -> {
             if (status == TextToSpeech.SUCCESS) {
                 tts.setLanguage(Locale.US);
                 showStep();
             }
         });
-
-        btnNext.setOnClickListener(v -> {
-            if (steps.isEmpty()) return;
-
-            if (currentStep < steps.size() - 1) {
-
-                int nextIndex = currentStep + 1;
-                String nextStep = steps.get(nextIndex);
-
-                if (prefs.getBoolean("motion", false)) {
-                    currentStep = nextIndex;
-                    showStep();
-                } else {
-                    startTransition(nextIndex, nextStep);
-                }
-
-            } else {
-                txtStep.setText("Script Completed ");
-                txtProgress.setText("");
-                btnNext.setEnabled(false);
-                isCompleted = true;
-
-                //  CONFETTI
-                if (konfettiView != null) {
-                    EmitterConfig emitterConfig = new Emitter(5L, TimeUnit.SECONDS).perSecond(30);
-                    konfettiView.start(
-                            new PartyFactory(emitterConfig)
-                                    .spread(360)
-                                    .setSpeedBetween(5f, 10f)
-                                    .timeToLive(2000L)
-                                    .colors(Arrays.asList(0xFFFFC107, 0xFF4CAF50, 0xFF2196F3))
-                                    .build()
-                    );
-                }
-            }
-        });
-
-        btnPrev.setOnClickListener(v -> {
-
-            if (isCompleted) {
-                isCompleted = false;
-                btnNext.setEnabled(true);
-                showStep();
-                return;
-            }
-
-            if (currentStep > 0) {
-                currentStep--;
-                showStep();
-            }
-        });
     }
 
-    void showStep() {
-        if (steps.isEmpty()) {
-            txtStep.setText("No steps found for this script.");
-            txtProgress.setText("");
-            btnNext.setEnabled(false);
-            btnPrev.setEnabled(false);
-            return;
-        }
-
+    private void showStep() {
+        if (steps.isEmpty()) return;
         String text = steps.get(currentStep);
+        txtStep.setText(text.toUpperCase());
+        txtProgress.setText((currentStep + 1) + "/" + steps.size());
 
-        txtStep.setText(text);
-        txtProgress.setText("Step " + (currentStep + 1) + " / " + steps.size());
+        int progress = (int) (((float) (currentStep + 1) / steps.size()) * 100);
+        progressIndicator.setProgress(progress, true);
 
-        btnPrev.setEnabled(currentStep != 0);
+        btnPrevFrame.setVisibility(currentStep == 0 ? View.INVISIBLE : View.VISIBLE);
+        
+        applyEmotionalCoding(text);
 
-        //  TTS
-        if (prefs.getBoolean("sound", true)) {
+        if (tts != null && prefs.getBoolean("sound", true)) {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
         }
+    }
 
-        //  Vibration
-        if (prefs.getBoolean("vibration", false)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
-            } else {
-                vibrator.vibrate(200);
-            }
+    private void applyEmotionalCoding(String text) {
+        String lower = text.toLowerCase();
+        if (lower.contains("smile") || lower.contains("happy") || lower.contains("friend")) {
+            imgStep.setColorFilter(getResources().getColor(android.R.color.holo_orange_light, getTheme()));
+        } else if (lower.contains("attention") || lower.contains("look") || lower.contains("calm")) {
+            imgStep.setColorFilter(getResources().getColor(android.R.color.holo_blue_light, getTheme()));
+        } else {
+            imgStep.setColorFilter(getResources().getColor(android.R.color.holo_green_light, getTheme()));
         }
     }
 
-    void startTransition(int nextIndex, String nextStep) {
+    private void completeScript() {
+        isCompleted = true;
+        txtStep.setText("SUPER STAR!");
+        btnNextText.setText("FINISH");
+        progressIndicator.setProgress(100);
 
+        if (konfettiView != null) {
+            EmitterConfig emitterConfig = new Emitter(2L, TimeUnit.SECONDS).perSecond(30);
+            konfettiView.start(new PartyFactory(emitterConfig)
+                    .spread(360)
+                    .setSpeedBetween(5f, 10f)
+                    .timeToLive(2000L)
+                    .colors(Arrays.asList(0xFF58CC02, 0xFF1CB0F6, 0xFFFFC800))
+                    .build());
+        }
+    }
+
+    private void startTransition(int nextIndex, String nextStep) {
         new Thread(() -> {
             for (int i = 3; i >= 1; i--) {
                 int finalI = i;
-
-                runOnUiThread(() ->
-                        txtTransition.setText("Next: " + nextStep + " in " + finalI)
-                );
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                runOnUiThread(() -> txtTransition.setText("Next part in... " + finalI));
+                try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
             }
-
             runOnUiThread(() -> {
                 currentStep = nextIndex;
                 txtTransition.setText("");
                 showStep();
             });
-
         }).start();
     }
 
@@ -196,11 +175,5 @@ public class ScriptPlayerActivity extends AppCompatActivity {
             tts.shutdown();
         }
         super.onDestroy();
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
     }
 }

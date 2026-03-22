@@ -3,8 +3,8 @@ package com.example.speakaid;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,7 +14,7 @@ public class AddCustomActivity extends AppCompatActivity {
 
     TextView txtHeader;
     EditText editTitle, editSteps;
-    Button btnSave;
+    FrameLayout btnSaveFrame;
     String type;
 
     @Override
@@ -25,7 +25,7 @@ public class AddCustomActivity extends AppCompatActivity {
         txtHeader = findViewById(R.id.txtHeader);
         editTitle = findViewById(R.id.editTitle);
         editSteps = findViewById(R.id.editSteps);
-        btnSave = findViewById(R.id.btnSave);
+        btnSaveFrame = findViewById(R.id.btnSaveFrame);
 
         type = getIntent().getStringExtra("type");
 
@@ -37,7 +37,7 @@ public class AddCustomActivity extends AppCompatActivity {
             editTitle.setHint("Script Title (e.g., Ordering Food)");
         }
 
-        btnSave.setOnClickListener(v -> saveToDatabase());
+        btnSaveFrame.setOnClickListener(v -> saveToDatabase());
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
