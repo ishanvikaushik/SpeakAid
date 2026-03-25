@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -14,15 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnRoutines, btnScripts, btnSettings, btnParentMode;
+    FrameLayout cardRoutines, cardScripts, cardSettings;
+    Button btnParentMode;
     SharedPreferences prefs;
+    String currentTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        currentTheme = prefs.getString("theme", "classic");
+        ThemeHelper.applyTheme(this);
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        prefs = getSharedPreferences("settings", MODE_PRIVATE);
         DBHelper db = new DBHelper(this);
 
         // Check if data exists, if not, seed it
@@ -32,23 +38,32 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        btnRoutines = findViewById(R.id.btnRoutines);
-        btnScripts = findViewById(R.id.btnScripts);
-        btnSettings = findViewById(R.id.btnSettings);
+        cardRoutines = findViewById(R.id.cardRoutines);
+        cardScripts = findViewById(R.id.cardScripts);
+        cardSettings = findViewById(R.id.cardSettings);
         btnParentMode = findViewById(R.id.btnParentMode);
 
-        btnRoutines.setOnClickListener(v -> startActivity(new Intent(this, RoutineListActivity.class)));
-        btnScripts.setOnClickListener(v -> startActivity(new Intent(this, ScriptListActivity.class)));
-        btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
+        cardRoutines.setOnClickListener(v -> startActivity(new Intent(this, RoutineListActivity.class)));
+        cardScripts.setOnClickListener(v -> startActivity(new Intent(this, ScriptListActivity.class)));
+        cardSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
 
         btnParentMode.setOnClickListener(v -> showPasscodeDialog());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Check if theme has changed since we last loaded
+        String newTheme = prefs.getString("theme", "classic");
+        if (!newTheme.equals(currentTheme)) {
+            recreate();
+        }
     }
 
     private void showPasscodeDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter Caregiver Passcode");
 
-        // Get the saved passcode or use default "1234"
         String savedPasscode = prefs.getString("passcode", "1234");
 
         final EditText input = new EditText(this);

@@ -1,40 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
+    android:fitsSystemWindows="true"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center_horizontal">
+    android:padding="24dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Caregiver Control"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="32dp"/>
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginBottom="40dp">
 
-    <Button
-        android:id="@+id/btnAddRoutine"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="Add Custom Routine"
-        android:textSize="18sp"
-        android:layout_marginBottom="16dp"/>
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/text_main" />
 
-    <Button
-        android:id="@+id/btnAddScript"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-black"
+            android:text="Caregiver Control"
+            android:textColor="@color/text_main"
+            android:textSize="32sp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/btnAddRoutineFrame"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="Add Custom Script"
-        android:textSize="18sp"
-        android:layout_marginBottom="32dp"/>
+        android:layout_height="90dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/duo_button_blue"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-black"
+            android:text="ADD CUSTOM ROUTINE"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/btnAddScriptFrame"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/duo_button_green"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-black"
+            android:text="ADD CUSTOM SCRIPT"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/btnResetAll"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/duo_button_purple"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-black"
+            android:text="RESET ALL DAILY PROGRESS"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </FrameLayout>
 
     <Button
         android:id="@+id/btnExit"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exit Parent Mode"
-        android:backgroundTint="#F44336"/>
+        android:layout_gravity="center"
+        android:text="EXIT CAREGIVER MODE"
+        android:textColor="@color/duo_red"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-black" />
 
 </LinearLayout>

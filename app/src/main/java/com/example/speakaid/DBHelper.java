@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "speakaid.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 3; // Incremented to version 3
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -18,10 +18,12 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        // Routine table
+        // Routine table with lastStep and completedDate
         db.execSQL("CREATE TABLE Routine (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "title TEXT)");
+                "title TEXT, " +
+                "lastStep INTEGER DEFAULT 0, " +
+                "completedDate TEXT)"); // Store date as "YYYY-MM-DD"
 
         // Step table
         db.execSQL("CREATE TABLE Step (" +
@@ -43,11 +45,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS Routine");
-        db.execSQL("DROP TABLE IF EXISTS Step");
-        db.execSQL("DROP TABLE IF EXISTS Script");
-        db.execSQL("DROP TABLE IF EXISTS ScriptStep");
-        onCreate(db);
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE Routine ADD COLUMN lastStep INTEGER DEFAULT 0");
+        }
+        if (oldVersion < 3) {
+            db.execSQL("ALTER TABLE Routine ADD COLUMN completedDate TEXT");
+        }
     }
 
     // 🔹 Insert Routine
@@ -55,7 +58,33 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("title", title);
+        values.put("lastStep", 0);
         return db.insert("Routine", null, values);
+    }
+
+    // 🔹 Update Progress
+    public void updateRoutineProgress(int id, int lastStep) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("lastStep", lastStep);
+        db.update("Routine", values, "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    // 🔹 Mark as Completed for today
+    public void markRoutineCompleted(int id, String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("lastStep", 0);
+        values.put("completedDate", date);
+        db.update("Routine", values, "id = ?", new String[]{String.valueOf(id)});
+    }
+
+    // 🔹 Reset completion status (e.g. if user wants to start again or for next day check)
+    public void resetRoutineCompletion(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("completedDate", (String)null);
+        db.update("Routine", values, "id = ?", new String[]{String.valueOf(id)});
     }
 
     // 🔹 Insert Step
