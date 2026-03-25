@@ -1,38 +1,65 @@
 package com.example.speakaid;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ParentModeActivity extends AppCompatActivity {
 
-    Button btnAddRoutine, btnAddScript, btnExit;
+    FrameLayout btnAddRoutineFrame, btnAddScriptFrame, btnResetAll;
+    Button btnExit;
+    ImageView btnBack;
+    DBHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent_mode);
 
-        setTitle("Caregiver Mode");
-
-        btnAddRoutine = findViewById(R.id.btnAddRoutine);
-        btnAddScript = findViewById(R.id.btnAddScript);
+        db = new DBHelper(this);
+        btnAddRoutineFrame = findViewById(R.id.btnAddRoutineFrame);
+        btnAddScriptFrame = findViewById(R.id.btnAddScriptFrame);
+        btnResetAll = findViewById(R.id.btnResetAll);
         btnExit = findViewById(R.id.btnExit);
+        btnBack = findViewById(R.id.btnBack);
 
-        btnAddRoutine.setOnClickListener(v -> {
+        btnAddRoutineFrame.setOnClickListener(v -> {
             Intent intent = new Intent(this, AddCustomActivity.class);
             intent.putExtra("type", "routine");
             startActivity(intent);
         });
 
-        btnAddScript.setOnClickListener(v -> {
+        btnAddScriptFrame.setOnClickListener(v -> {
             Intent intent = new Intent(this, AddCustomActivity.class);
             intent.putExtra("type", "script");
             startActivity(intent);
         });
 
+        btnResetAll.setOnClickListener(v -> {
+            resetAllProgress();
+        });
+
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
         btnExit.setOnClickListener(v -> finish());
+    }
+
+    private void resetAllProgress() {
+        try (Cursor cursor = db.getRoutines()) {
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(0);
+                db.updateRoutineProgress(id, 0);
+                db.resetRoutineCompletion(id);
+            }
+        }
+        Toast.makeText(this, "All daily progress has been reset!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -3,32 +3,43 @@ package com.example.speakaid;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.materialswitch.MaterialSwitch;
+
 public class SettingsActivity extends AppCompatActivity {
 
-    Switch switchSound, switchVibration, switchMotion;
-    Button btnChangePasscode;
+    MaterialSwitch switchSound, switchVibration, switchMotion;
+    FrameLayout btnChangePasscodeFrame;
+    MaterialCardView themeClassic, themeLavender, themeOcean, themeSunset;
+    ImageView btnBack;
     SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        ThemeHelper.applyTheme(this);
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        setTitle("Settings");
         switchSound = findViewById(R.id.switchSound);
         switchVibration = findViewById(R.id.switchVibration);
         switchMotion = findViewById(R.id.switchMotion);
-        btnChangePasscode = findViewById(R.id.btnChangePasscode);
-
-        prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        btnChangePasscodeFrame = findViewById(R.id.btnChangePasscodeFrame);
+        btnBack = findViewById(R.id.btnBack); // Explicitly finding the view
+        
+        themeClassic = findViewById(R.id.themeClassic);
+        themeLavender = findViewById(R.id.themeLavender);
+        themeOcean = findViewById(R.id.themeOcean);
+        themeSunset = findViewById(R.id.themeSunset);
 
         // Load saved values
         switchSound.setChecked(prefs.getBoolean("sound", true));
@@ -48,12 +59,24 @@ public class SettingsActivity extends AppCompatActivity {
                 prefs.edit().putBoolean("motion", isChecked).apply()
         );
 
-        btnChangePasscode.setOnClickListener(v -> showChangePasscodeDialog());
+        // Theme clicks
+        themeClassic.setOnClickListener(v -> saveTheme("classic"));
+        themeLavender.setOnClickListener(v -> saveTheme("lavender"));
+        themeOcean.setOnClickListener(v -> saveTheme("ocean"));
+        themeSunset.setOnClickListener(v -> saveTheme("sunset"));
 
-        // for back navigation
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        btnChangePasscodeFrame.setOnClickListener(v -> showChangePasscodeDialog());
+
+        // FIX: Ensure back button logic is explicitly set
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
         }
+    }
+
+    private void saveTheme(String themeName) {
+        prefs.edit().putString("theme", themeName).apply();
+        Toast.makeText(this, "Theme updated!", Toast.LENGTH_SHORT).show();
+        recreate(); 
     }
 
     private void showChangePasscodeDialog() {
@@ -77,12 +100,5 @@ public class SettingsActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
         builder.show();
-    }
-
-    // for back navigation
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
     }
 }

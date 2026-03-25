@@ -2,4 +2,44 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Theme 1: Classic Duo -->
+    <color name="duo_green">#58CC02</color>
+    <color name="duo_green_shadow">#46A302</color>
+    <color name="duo_blue">#1CB0F6</color>
+    <color name="duo_blue_shadow">#1899D6</color>
+    <color name="duo_orange">#FF9600</color>
+    <color name="duo_orange_shadow">#D37D00</color>
+    <color name="duo_purple">#CE82FF</color>
+    <color name="duo_purple_shadow">#A568CC</color>
+    <color name="duo_red">#FF4B4B</color>
+    <color name="duo_red_shadow">#D33131</color>
+
+    <!-- Theme 2: Soft Lavender (Calm) -->
+    <color name="lavender_primary">#B39DDB</color>
+    <color name="lavender_shadow">#9575CD</color>
+    <color name="lavender_secondary">#E1BEE7</color>
+    <color name="lavender_bg">#F3E5F5</color>
+
+    <!-- Theme 3: Ocean Breeze -->
+    <color name="ocean_primary">#4DD0E1</color>
+    <color name="ocean_shadow">#00ACC1</color>
+    <color name="ocean_secondary">#B2EBF2</color>
+    <color name="ocean_bg">#E0F7FA</color>
+
+    <!-- Theme 4: Sunset Glow -->
+    <color name="sunset_primary">#FF8A65</color>
+    <color name="sunset_shadow">#F4511E</color>
+    <color name="sunset_secondary">#FFCCBC</color>
+    <color name="sunset_bg">#FFF3E0</color>
+
+    <color name="background_light">#FFFFFF</color>
+    <color name="text_main">#4B4B4B</color>
+    <color name="text_secondary">#AFAFAF</color>
+    <color name="border_gray">#E5E5E5</color>
+
+    <color name="glow_gold">#FFF4D1</color>
+    <color name="glow_green">#E1FFD1</color>
+    <color name="emotion_happy">#FFD600</color>
+    <color name="emotion_calm">#84D8FF</color>
 </resources>
