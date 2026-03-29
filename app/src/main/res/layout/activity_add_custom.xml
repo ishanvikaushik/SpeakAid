@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/duo_card_white">
 
         <EditText
@@ -63,6 +63,17 @@
             android:textColor="@color/text_main"
             android:textSize="18sp" />
     </FrameLayout>
+
+    <Button
+        android:id="@+id/btnSimplifyAI"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="✨ Simplify with AI"
+        android:backgroundTint="#673AB7"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-medium"
+        android:padding="12dp"/>
 
     <FrameLayout
         android:id="@+id/btnSaveFrame"
