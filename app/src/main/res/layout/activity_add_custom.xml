@@ -1,97 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_light"
     android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="Add Custom Routine"
-        android:textColor="@color/text_main"
-        android:textSize="28sp"
-        android:fontFamily="sans-serif-black" />
-
-    <FrameLayout
+    <!-- Header with Back Button -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/duo_card_white">
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
-        <EditText
-            android:id="@+id/editTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:hint="Enter Title (e.g., Morning Walk)"
-            android:padding="20dp"
-            android:textColor="@color/text_main"
-            android:textSize="18sp" />
-    </FrameLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="Add Steps (One per line):"
-        android:textColor="@color/text_main"
-        android:textSize="18sp"
-        android:fontFamily="sans-serif-black" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/duo_card_white">
-
-        <EditText
-            android:id="@+id/editSteps"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:gravity="top"
-            android:hint="Step 1\nStep 2\nStep 3"
-            android:inputType="textMultiLine"
-            android:padding="20dp"
-            android:textColor="@color/text_main"
-            android:textSize="18sp" />
-    </FrameLayout>
-
-    <Button
-        android:id="@+id/btnSimplifyAI"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="✨ Simplify with AI"
-        android:backgroundTint="#673AB7"
-        android:layout_marginBottom="16dp"
-        android:textColor="@color/white"
-        android:fontFamily="sans-serif-medium"
-        android:padding="12dp"/>
-
-    <FrameLayout
-        android:id="@+id/btnSaveFrame"
-        android:layout_width="match_parent"
-        android:layout_height="84dp"
-        android:background="@drawable/duo_button_next_blue"
-        android:clickable="true"
-        android:focusable="true">
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_no"
+            android:rotation="180"
+            android:contentDescription="Back"
+            android:tint="@color/text_main" />
 
         <TextView
-            android:id="@+id/btnSaveText"
+            android:id="@+id/txtHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:text="Add Custom"
+            android:textColor="@color/text_main"
+            android:textSize="22sp"
             android:fontFamily="sans-serif-black"
-            android:text="SAVE TO LIBRARY"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:paddingTop="0dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/duo_card_white">
+
+            <EditText
+                android:id="@+id/editTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="Enter Title"
+                android:padding="20dp"
+                android:textColor="@color/text_main"
+                android:textSize="18sp" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Add Steps (One per line):"
+            android:textColor="@color/text_main"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-black" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/duo_card_white">
+
+            <EditText
+                android:id="@+id/editSteps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:hint="Step 1\nStep 2"
+                android:inputType="textMultiLine"
+                android:padding="20dp"
+                android:textColor="@color/text_main"
+                android:textSize="18sp" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/btnSimplifyAI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="✨ Simplify with AI"
+            android:backgroundTint="#673AB7"
+            android:layout_marginBottom="16dp"
             android:textColor="@color/white"
-            android:textSize="20sp" />
-    </FrameLayout>
+            android:fontFamily="sans-serif-medium"
+            android:padding="12dp"/>
+
+        <FrameLayout
+            android:id="@+id/btnSaveFrame"
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:background="@drawable/duo_button_next_blue"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-black"
+                android:text="SAVE TO LIBRARY"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </FrameLayout>
+    </LinearLayout>
 
 </LinearLayout>
