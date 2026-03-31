@@ -5,9 +5,9 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.InputType;
-import android.widget.Button;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -15,17 +15,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    FrameLayout cardRoutines, cardScripts, cardSettings;
-    Button btnParentMode;
+    View btnRoutines, btnScripts, btnSettings, btnCommunicate;
+    TextView btnParentMode;
     SharedPreferences prefs;
     String currentTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        
+        // Track the theme being applied
         currentTheme = prefs.getString("theme", "classic");
         ThemeHelper.applyTheme(this);
-        
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -38,14 +40,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        cardRoutines = findViewById(R.id.cardRoutines);
-        cardScripts = findViewById(R.id.cardScripts);
-        cardSettings = findViewById(R.id.cardSettings);
+        // Initialize views
+        btnRoutines = findViewById(R.id.btnRoutines);
+        btnScripts = findViewById(R.id.btnScripts);
+        btnSettings = findViewById(R.id.btnSettings);
+        btnCommunicate = findViewById(R.id.btnCommunicate);
         btnParentMode = findViewById(R.id.btnParentMode);
 
-        cardRoutines.setOnClickListener(v -> startActivity(new Intent(this, RoutineListActivity.class)));
-        cardScripts.setOnClickListener(v -> startActivity(new Intent(this, ScriptListActivity.class)));
-        cardSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
+        btnRoutines.setOnClickListener(v -> startActivity(new Intent(this, RoutineListActivity.class)));
+        btnScripts.setOnClickListener(v -> startActivity(new Intent(this, ScriptListActivity.class)));
+        btnCommunicate.setOnClickListener(v -> startActivity(new Intent(this, CommunicateActivity.class)));
+        btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
 
         btnParentMode.setOnClickListener(v -> showPasscodeDialog());
     }
@@ -53,9 +58,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Check if theme has changed since we last loaded
-        String newTheme = prefs.getString("theme", "classic");
-        if (!newTheme.equals(currentTheme)) {
+        // Check if the theme in preferences is different from the one currently applied
+        String savedTheme = prefs.getString("theme", "classic");
+        if (!savedTheme.equals(currentTheme)) {
+            // Theme has changed! Recreate the activity to apply it
             recreate();
         }
     }
