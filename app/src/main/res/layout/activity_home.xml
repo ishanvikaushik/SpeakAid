@@ -14,140 +14,157 @@
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="#4B4B4B"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="24dp"
         android:gravity="center"
         android:fontFamily="sans-serif-black"/>
 
-    <!-- Mini Routines -->
-    <FrameLayout
-        android:id="@+id/btnRoutines"
+    <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/duo_button_blue"
-        android:clickable="true"
-        android:focusable="true">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_routines"
-                android:tint="@color/white"/>
-            <TextView
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:columnCount="1"
+        android:rowCount="4">
+
+        <!-- Mini Routines -->
+        <FrameLayout
+            android:id="@+id/btnRoutines"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/duo_button_blue"
+            android:clickable="true"
+            android:focusable="true">
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MINI ROUTINES"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-black"/>
-        </LinearLayout>
-    </FrameLayout>
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_routines"
+                    android:layout_marginEnd="12dp"
+                    android:tint="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MINI ROUTINES"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-black"/>
+            </LinearLayout>
+        </FrameLayout>
 
-    <!-- Social Scripts -->
-    <FrameLayout
-        android:id="@+id/btnScripts"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/duo_button_green"
-        android:clickable="true"
-        android:focusable="true">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_scripts"
-                android:tint="@color/white"/>
-            <TextView
+        <!-- Social Scripts -->
+        <FrameLayout
+            android:id="@+id/btnScripts"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/duo_button_green"
+            android:clickable="true"
+            android:focusable="true">
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SOCIAL SCRIPTS"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-black"/>
-        </LinearLayout>
-    </FrameLayout>
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_scripts"
+                    android:layout_marginEnd="12dp"
+                    android:tint="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SOCIAL SCRIPTS"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-black"/>
+            </LinearLayout>
+        </FrameLayout>
 
-    <!-- Communicate -->
-    <FrameLayout
-        android:id="@+id/btnCommunicate"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/duo_button_purple"
-        android:clickable="true"
-        android:focusable="true">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_chat"
-                android:tint="@color/white"/>
-            <TextView
+        <!-- Communicate -->
+        <FrameLayout
+            android:id="@+id/btnCommunicate"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/duo_button_purple"
+            android:clickable="true"
+            android:focusable="true">
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="COMMUNICATE"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-black"/>
-        </LinearLayout>
-    </FrameLayout>
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_chat"
+                    android:layout_marginEnd="12dp"
+                    android:tint="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="COMMUNICATE"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-black"/>
+            </LinearLayout>
+        </FrameLayout>
 
-    <!-- Settings -->
-    <FrameLayout
+        <!-- Sensory Play -->
+        <FrameLayout
+            android:id="@+id/btnSensory"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/duo_button_orange"
+            android:clickable="true"
+            android:focusable="true">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_happy"
+                    android:layout_marginEnd="12dp"
+                    android:tint="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SENSORY PLAY"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-black"/>
+            </LinearLayout>
+        </FrameLayout>
+
+    </GridLayout>
+
+    <Button
         android:id="@+id/btnSettings"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/duo_button_blue"
-        android:clickable="true"
-        android:focusable="true">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_settings"
-                android:layout_marginEnd="12dp"
-                android:tint="@color/white"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SETTINGS"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif-black"/>
-        </LinearLayout>
-    </FrameLayout>
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="60dp"
+        android:text="Settings"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/border_gray"
+        android:textColor="@color/text_main"
+        android:fontFamily="sans-serif-black"/>
 
     <TextView
         android:id="@+id/btnParentMode"
@@ -155,8 +172,8 @@
         android:layout_height="wrap_content"
         android:text="Caregiver Mode"
         android:textColor="#AFAFAF"
-        android:textSize="16sp"
-        android:layout_marginBottom="16dp"
+        android:textSize="14sp"
+        android:layout_marginTop="16dp"
         android:clickable="true"
         android:focusable="true"
         android:fontFamily="sans-serif-medium"/>

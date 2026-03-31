@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    View btnRoutines, btnScripts, btnSettings, btnCommunicate;
+    View btnRoutines, btnScripts, btnSettings, btnCommunicate, btnSensory;
     TextView btnParentMode;
     SharedPreferences prefs;
     String currentTheme;
@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         prefs = getSharedPreferences("settings", MODE_PRIVATE);
         
-        // Track the theme being applied
         currentTheme = prefs.getString("theme", "classic");
         ThemeHelper.applyTheme(this);
 
@@ -33,23 +32,23 @@ public class MainActivity extends AppCompatActivity {
 
         DBHelper db = new DBHelper(this);
 
-        // Check if data exists, if not, seed it
         try (Cursor cursor = db.getScripts()) {
             if (cursor.getCount() == 0) {
                 seedData(db);
             }
         }
 
-        // Initialize views
         btnRoutines = findViewById(R.id.btnRoutines);
         btnScripts = findViewById(R.id.btnScripts);
         btnSettings = findViewById(R.id.btnSettings);
         btnCommunicate = findViewById(R.id.btnCommunicate);
+        btnSensory = findViewById(R.id.btnSensory);
         btnParentMode = findViewById(R.id.btnParentMode);
 
         btnRoutines.setOnClickListener(v -> startActivity(new Intent(this, RoutineListActivity.class)));
         btnScripts.setOnClickListener(v -> startActivity(new Intent(this, ScriptListActivity.class)));
         btnCommunicate.setOnClickListener(v -> startActivity(new Intent(this, CommunicateActivity.class)));
+        btnSensory.setOnClickListener(v -> startActivity(new Intent(this, SensoryPlayActivity.class)));
         btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
 
         btnParentMode.setOnClickListener(v -> showPasscodeDialog());
@@ -58,10 +57,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Check if the theme in preferences is different from the one currently applied
         String savedTheme = prefs.getString("theme", "classic");
         if (!savedTheme.equals(currentTheme)) {
-            // Theme has changed! Recreate the activity to apply it
             recreate();
         }
     }
