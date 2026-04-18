@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -37,6 +38,10 @@ public class ScriptPlayerActivity extends AppCompatActivity {
     TextToSpeech tts;
     SharedPreferences prefs;
     KonfettiView konfettiView;
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +94,7 @@ public class ScriptPlayerActivity extends AppCompatActivity {
         btnPrevFrame.setOnClickListener(v -> {
             if (isCompleted) {
                 isCompleted = false;
-                btnNextText.setText("NEXT");
+                btnNextText.setText(getString(R.string.next));//btnNextText.setText("NEXT");
                 showStep();
             } else if (currentStep > 0) {
                 currentStep--;
@@ -138,8 +143,11 @@ public class ScriptPlayerActivity extends AppCompatActivity {
 
     private void completeScript() {
         isCompleted = true;
-        txtStep.setText("SUPER STAR!");
-        btnNextText.setText("FINISH");
+       // txtStep.setText("SUPER STAR!");
+       // btnNextText.setText("FINISH");
+        txtStep.setText(getString(R.string.script_complete));
+        btnNextText.setText(getString(R.string.finish));
+
         progressIndicator.setProgress(100);
 
         if (konfettiView != null) {
@@ -157,7 +165,9 @@ public class ScriptPlayerActivity extends AppCompatActivity {
         new Thread(() -> {
             for (int i = 3; i >= 1; i--) {
                 int finalI = i;
-                runOnUiThread(() -> txtTransition.setText("Next part in... " + finalI));
+                //runOnUiThread(() -> txtTransition.setText("Next part in... " + finalI));
+                runOnUiThread(() -> txtTransition.setText(getString(R.string.script_transition, finalI)));
+
                 try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
             }
             runOnUiThread(() -> {

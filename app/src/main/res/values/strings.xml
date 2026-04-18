@@ -1,3 +1,124 @@
 <resources>
-    <string name="app_name">speakaid</string>
+    <string name="app_name">SpeakAid</string>
+
+    <!-- General Labels -->
+    <string name="back">BACK</string>
+    <string name="next">NEXT</string>
+    <string name="reset">RESET</string>
+    <string name="save">SAVE</string>
+    <string name="finish">FINISH</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="error_fill_fields">Please fill all fields</string>
+
+    <!-- Home Screen -->
+    <string name="what_to_do">What shall we do today?</string>
+    <string name="mini_routines">MINI ROUTINES</string>
+    <string name="social_scripts">SOCIAL SCRIPTS</string>
+    <string name="header_communicate">COMMUNICATE</string>
+    <string name="sensory_play">SENSORY PLAY</string>
+    <string name="caregiver">Caregiver Mode</string>
+    <string name="settings">Settings</string>
+
+    <!-- add_custom.xml & Activity -->
+    <string name="add_custom_routine_header">Add Custom Routine</string>
+    <string name="add_custom_script_header">Add Custom Script</string>
+    <string name="hint_routine_title">Routine Title (e.g., Laundry)</string>
+    <string name="hint_script_title">Script Title (e.g., Ordering Food)</string>
+    <string name="enter_title">Enter Title</string>
+    <string name="add_step">Add Steps (One per line):</string>
+    <string name="steps_hint">Step 1\nStep 2</string>
+    <string name="simplify_ai">✨ Simplify with AI</string>
+    <string name="save_to_library">SAVE TO LIBRARY</string>
+    <string name="msg_ai_working">AI is simplifying your steps...</string>
+    <string name="msg_ai_success">Steps simplified!</string>
+    <string name="msg_routine_saved">Routine Saved!</string>
+    <string name="msg_script_saved">Script Saved!</string>
+    <string name="msg_enter_steps">Please enter some steps first</string>
+
+    <!-- bubble_pop.xml -->
+    <string name="pop_tap">Tap to Pop</string>
+
+    <!-- communicate.xml -->
+    <string name="tap_button">Tap a button to speak</string>
+    <string name="food">Food</string>
+    <string name="water">Water</string>
+    <string name="toilet">Toilet</string>
+    <string name="help">Help</string>
+    <string name="tired">Tired</string>
+    <string name="happy">Happy</string>
+
+    <!-- fidget_spinner.xml -->
+    <string name="fidget_spinner">Fidget Spinner</string>
+    <string name="swipe_to_spin">Swipe to Spin</string>
+    <string name="calm_mind">A calm mind is a happy mind</string>
+
+    <!-- parent_mode.xml -->
+    <string name="caregiver_control">Caregiver Control</string>
+    <string name="add_custom_routine">ADD CUSTOM ROUTINE</string>
+    <string name="add_custom_script">ADD CUSTOM SCRIPT</string>
+    <string name="reset_all_daily_progress">RESET ALL DAILY PROGRESS</string>
+    <string name="exit_caregiver_mode">EXIT CAREGIVER MODE</string>
+    <string name="msg_reset_success">All daily progress has been reset!</string>
+
+    <!-- reset_progress.xml -->
+    <string name="select_routines">Select routines to reset:</string>
+    <string name="reset_selected">RESET SELECTED</string>
+
+    <!-- routine_player.xml -->
+    <string name="wake_up">Wake up</string>
+    <string name="get_ready">Get ready... %1$d</string>
+    <string name="routine_complete">AMAZING JOB!</string>
+
+    <!-- script_player.xml -->
+    <string name="say_hello">Say Hello</string>
+    <string name="script_transition">Next part in... %1$d</string>
+    <string name="script_complete">SUPER STAR!</string>
+
+    <!-- sensory_hub.xml -->
+    <string name="choose_zen">Choose Your Zen</string>
+    <string name="sensory_hub">Sensory Hub</string>
+    <string name="zen_canvas">ZEN CANVAS</string>
+    <string name="spinner">FIDGET SPINNER</string>
+
+    <!-- sensory_play.xml -->
+    <string name="screen_reveal">Slowly clear the screen to reveal</string>
+
+    <!-- settings.xml -->
+    <string name="choose_theme">CHOOSE YOUR THEME</string>
+    <string name="classic">CLASSIC</string>
+    <string name="calm">CALM</string>
+    <string name="ocean">OCEAN</string>
+    <string name="sunset">SUNSET</string>
+    <string name="sound">Sound (TTS)</string>
+    <string name="vibration">Vibration</string>
+    <string name="motion">Reduce Motion</string>
+    <string name="change_passcode">CHANGE PASSCODE</string>
+    <string name="change_lang">CHANGE TO KANNADA</string>
+    <string name="theme_updated">Theme updated!</string>
+
+    <!-- List Items Placeholders -->
+    <string name="routine_name">Routine</string>
+    <string name="not_started">Not Started</string>
+    <string name="completed_today">Completed Today!</string>
+    <string name="script_title">Script</string>
+    <string name="step_progress">Step %1$d of %2$d (%3$d%%)</string>
+
+    <!-- Default Seed Data -->
+    <string name="morning_routine">Morning Routine</string>
+    <string name="school_routine">School Routine</string>
+    <string name="night_routine">Night Routine</string>
+    <string name="brush_teeth">Brush teeth</string>
+    <string name="get_dressed">Get dressed</string>
+    <string name="pack_bag">Pack school bag</string>
+    <string name="wear_uniform">Wear uniform</string>
+    <string name="go_to_bed">Go to bed</string>
+    <string name="ask_help">Ask for Help</string>
+    <string name="look_person">Look at the person</string>
+    <string name="smile_if_comfy">Smile if comfortable</string>
+    <string name="ask_how_are">Ask how they are</string>
+    <string name="get_attention">Get their attention</string>
+    <string name="ask_politely">Ask politely</string>
+    <string name="explain_need">Explain what you need</string>
+
 </resources>

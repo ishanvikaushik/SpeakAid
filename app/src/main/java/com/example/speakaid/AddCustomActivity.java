@@ -1,13 +1,14 @@
 package com.example.speakaid;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,12 +31,15 @@ public class AddCustomActivity extends AppCompatActivity {
     EditText editTitle, editSteps;
     FrameLayout btnSaveFrame;
     Button btnSimplifyAI;
-    ImageButton btnBack;
     String type;
 
-    // Securely loaded from local.properties via BuildConfig
+    // The API key is now safely loaded from local.properties via BuildConfig
     private static final String GEMINI_API_KEY = BuildConfig.GEMINI_API_KEY;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +50,6 @@ public class AddCustomActivity extends AppCompatActivity {
         editSteps = findViewById(R.id.editSteps);
         btnSaveFrame = findViewById(R.id.btnSaveFrame);
         btnSimplifyAI = findViewById(R.id.btnSimplifyAI);
-        btnBack = findViewById(R.id.btnBack);
 
         type = getIntent().getStringExtra("type");
 
@@ -58,7 +61,6 @@ public class AddCustomActivity extends AppCompatActivity {
             editTitle.setHint("Script Title (e.g., Ordering Food)");
         }
 
-        btnBack.setOnClickListener(v -> finish());
         btnSimplifyAI.setOnClickListener(v -> simplifyWithAI());
         btnSaveFrame.setOnClickListener(v -> saveToDatabase());
 
@@ -74,8 +76,9 @@ public class AddCustomActivity extends AppCompatActivity {
             return;
         }
 
+        // Check if the API key was loaded correctly
         if (GEMINI_API_KEY == null || GEMINI_API_KEY.isEmpty() || GEMINI_API_KEY.equals("unused")) {
-            Toast.makeText(this, "API Key error. Please Clean and Rebuild project.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "API Key not found in local.properties", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -84,16 +87,15 @@ public class AddCustomActivity extends AppCompatActivity {
         pd.setCancelable(false);
         pd.show();
 
-        // Use gemini-1.5-flash (Standard high-speed model)
-        GenerativeModel gm = new GenerativeModel("gemini-2.5-flash", GEMINI_API_KEY);
+        GenerativeModel gm = new GenerativeModel("gemini-1.5-flash", GEMINI_API_KEY);
         GenerativeModelFutures model = GenerativeModelFutures.from(gm);
 
-        String prompt = "You are an assistant helping neurodivergent users. " +
-                "Rewrite the following list of steps to be extremely simple, direct, and easy to follow. " +
-                "Use 'Plain Language'. Keep the steps as a list. Do not add conversational text or intro/outro. " +
-                "Steps:\n" + originalSteps;
+        String prompt = "Rewrite these steps for a neurodivergent user. Use plain language. Keep it as a list:\n" + originalSteps;
 
-        Content content = new Content.Builder().addText(prompt).build();
+        Content content = new Content.Builder()
+                .addText(prompt)
+                .build();
+
         Executor executor = Executors.newSingleThreadExecutor();
         ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
 
@@ -114,8 +116,13 @@ public class AddCustomActivity extends AppCompatActivity {
             public void onFailure(Throwable t) {
                 runOnUiThread(() -> {
                     pd.dismiss();
-                    Log.e("GeminiError", "Error: " + t.toString());
-                    Toast.makeText(AddCustomActivity.this, "AI Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.e("GeminiError", "Detailed Error: " + t.toString());
+                    String errorMsg = t.getMessage();
+                    if (errorMsg != null && errorMsg.contains("404")) {
+                        Toast.makeText(AddCustomActivity.this, "AI Error: Model not found or API key issue.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(AddCustomActivity.this, "AI Error: " + errorMsg, Toast.LENGTH_LONG).show();
+                    }
                 });
             }
         }, executor);
@@ -150,6 +157,8 @@ public class AddCustomActivity extends AppCompatActivity {
                 }
                 Toast.makeText(this, "Script Saved!", Toast.LENGTH_SHORT).show();
             }
+        } catch (Exception e) {
+            Log.e("DBError", "Error saving: " + e.getMessage());
         }
 
         finish();

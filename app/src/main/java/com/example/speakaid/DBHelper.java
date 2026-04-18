@@ -149,4 +149,18 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return count == 0;
     }
+    // new fn
+    public void resetAllRoutines() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put("lastStep", 0);
+            values.put("completedDate", (String)null);
+            db.update("Routine", values, null, null);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
 }

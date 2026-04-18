@@ -37,7 +37,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-black"
-                android:text="Settings"
+                android:text="@string/settings"
                 android:textColor="@color/text_main"
                 android:textSize="32sp" />
         </LinearLayout>
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif-black"
-            android:text="CHOOSE YOUR THEME"
+            android:text="@string/choose_theme"
             android:textColor="@color/text_secondary"
             android:textSize="18sp" />
 
@@ -87,7 +87,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:fontFamily="sans-serif-black"
-                            android:text="CLASSIC"
+                            android:text="@string/classic"
                             android:textColor="@color/text_main" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -116,7 +116,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:fontFamily="sans-serif-black"
-                            android:text="CALM"
+                            android:text="@string/calm"
                             android:textColor="@color/text_main" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -145,7 +145,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:fontFamily="sans-serif-black"
-                            android:text="OCEAN"
+                            android:text="@string/ocean"
                             android:textColor="@color/text_main" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -174,7 +174,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:fontFamily="sans-serif-black"
-                            android:text="SUNSET"
+                            android:text="@string/sunset"
                             android:textColor="@color/text_main" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -199,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:minHeight="64dp"
-                    android:text="Sound (TTS)"
+                    android:text="@string/sound"
                     android:textColor="@color/text_main"
                     android:textSize="20sp" />
 
@@ -209,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:minHeight="64dp"
-                    android:text="Vibration"
+                    android:text="@string/vibration"
                     android:textColor="@color/text_main"
                     android:textSize="20sp" />
 
@@ -218,7 +218,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="64dp"
-                    android:text="Reduce Motion"
+                    android:text="@string/motion"
                     android:textColor="@color/text_main"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -248,10 +248,31 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="sans-serif-black"
-                        android:text="CHANGE PASSCODE"
+                        android:text="@string/change_passcode"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
                 </FrameLayout>
+
+                <!--added ->new button to change lang -->
+                <FrameLayout
+                    android:id="@+id/btnChangeLang"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/duo_button_purple"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="sans-serif-black"
+                        android:text="@string/change_lang"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+                </FrameLayout>
+
             </LinearLayout>
         </FrameLayout>
 

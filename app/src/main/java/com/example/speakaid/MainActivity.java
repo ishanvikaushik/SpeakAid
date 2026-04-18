@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -18,13 +19,20 @@ public class MainActivity extends AppCompatActivity {
     View btnRoutines, btnScripts, btnSettings, btnCommunicate, btnSensory;
     TextView btnParentMode;
     SharedPreferences prefs;
-    String currentTheme;
+    String currentTheme,currentLanguage;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         prefs = getSharedPreferences("settings", MODE_PRIVATE);
         
         currentTheme = prefs.getString("theme", "classic");
+        currentLanguage=LocaleHelper.getLanguage(this);
+
         ThemeHelper.applyTheme(this);
 
         super.onCreate(savedInstanceState);
@@ -58,23 +66,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         String savedTheme = prefs.getString("theme", "classic");
-        if (!savedTheme.equals(currentTheme)) {
+        String savedLanguage=LocaleHelper.getLanguage(this);
+
+        if (!savedTheme.equals(currentTheme)||!savedLanguage.equals(currentLanguage)) {
+            currentTheme=savedTheme;
+            currentLanguage=savedLanguage;
             recreate();
         }
     }
 
     private void showPasscodeDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter Caregiver Passcode");
+        builder.setTitle(getString(R.string.caregiver_control));
 
         String savedPasscode = prefs.getString("passcode", "1234");
 
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        input.setHint("Enter passcode");
+        input.setHint(getString(R.string.change_passcode));
         builder.setView(input);
 
-        builder.setPositiveButton("OK", (dialog, which) -> {
+        builder.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             String enteredPasscode = input.getText().toString();
             if (enteredPasscode.equals(savedPasscode)) {
                 startActivity(new Intent(MainActivity.this, ParentModeActivity.class));
@@ -82,37 +94,37 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Incorrect Passcode", Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.cancel());
 
         builder.show();
     }
 
     private void seedData(DBHelper db) {
-        db.insertRoutine("Morning Routine");
-        db.insertRoutine("School Routine");
-        db.insertRoutine("Night Routine");
+        db.insertRoutine(getString(R.string.morning_routine));
+        db.insertRoutine(getString(R.string.school_routine));
+        db.insertRoutine(getString(R.string.night_routine));
 
-        db.insertStep(1, "Wake up", 1);
-        db.insertStep(1, "Brush teeth", 2);
-        db.insertStep(1, "Get dressed", 3);
+        db.insertStep(1, getString(R.string.wake_up), 1);
+        db.insertStep(1, getString(R.string.brush_teeth), 2);
+        db.insertStep(1, getString(R.string.get_dressed), 3);
 
-        db.insertStep(2, "Pack school bag", 1);
-        db.insertStep(2, "Wear uniform", 2);
+        db.insertStep(2, getString(R.string.pack_bag), 1);
+        db.insertStep(2, getString(R.string.wear_uniform), 2);
 
-        db.insertStep(3, "Brush teeth", 1);
-        db.insertStep(3, "Go to bed", 2);
+        db.insertStep(3, getString(R.string.brush_teeth), 1);
+        db.insertStep(3, getString(R.string.go_to_bed), 2);
 
-        db.insertScript("Say Hello");
-        db.insertScript("Ask for Help");
+        db.insertScript(getString(R.string.say_hello));
+        db.insertScript(getString(R.string.ask_help));
 
-        db.insertScriptStep(1, "Look at the person", 1);
-        db.insertScriptStep(1, "Smile if comfortable", 2);
-        db.insertScriptStep(1, "Say hello", 3);
-        db.insertScriptStep(1, "Ask how they are", 4);
+        db.insertScriptStep(1, getString(R.string.look_person), 1);
+        db.insertScriptStep(1, getString(R.string.smile_if_comfy), 2);
+        db.insertScriptStep(1, getString(R.string.say_hello), 3);
+        db.insertScriptStep(1, getString(R.string.ask_how_are), 4);
 
-        db.insertScriptStep(2, "Look at the person", 1);
-        db.insertScriptStep(2, "Get their attention", 2);
-        db.insertScriptStep(2, "Ask politely", 3);
-        db.insertScriptStep(2, "Explain what you need", 4);
+        db.insertScriptStep(2, getString(R.string.look_person), 1);
+        db.insertScriptStep(2, getString(R.string.get_attention), 2);
+        db.insertScriptStep(2, getString(R.string.ask_politely), 3);
+        db.insertScriptStep(2, getString(R.string.explain_need), 4);
     }
 }

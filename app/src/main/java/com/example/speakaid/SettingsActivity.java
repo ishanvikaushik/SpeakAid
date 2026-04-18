@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
@@ -17,10 +18,15 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 public class SettingsActivity extends AppCompatActivity {
 
     MaterialSwitch switchSound, switchVibration, switchMotion;
-    FrameLayout btnChangePasscodeFrame;
+    FrameLayout btnChangePasscodeFrame, btnChangeLang;
     MaterialCardView themeClassic, themeLavender, themeOcean, themeSunset;
     ImageView btnBack;
     SharedPreferences prefs;
+// new fn
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +40,8 @@ public class SettingsActivity extends AppCompatActivity {
         switchVibration = findViewById(R.id.switchVibration);
         switchMotion = findViewById(R.id.switchMotion);
         btnChangePasscodeFrame = findViewById(R.id.btnChangePasscodeFrame);
-        btnBack = findViewById(R.id.btnBack); // Explicitly finding the view
+        btnChangeLang = findViewById(R.id.btnChangeLang);
+        btnBack = findViewById(R.id.btnBack);
         
         themeClassic = findViewById(R.id.themeClassic);
         themeLavender = findViewById(R.id.themeLavender);
@@ -67,7 +74,17 @@ public class SettingsActivity extends AppCompatActivity {
 
         btnChangePasscodeFrame.setOnClickListener(v -> showChangePasscodeDialog());
 
-        // FIX: Ensure back button logic is explicitly set
+        // Language toggle
+        btnChangeLang.setOnClickListener(v -> {
+            String currentLang = LocaleHelper.getLanguage(this);
+            if ("en".equals(currentLang)) {
+                LocaleHelper.persist(this, "kn");
+            } else {
+                LocaleHelper.persist(this, "en");
+            }
+            recreate(); 
+        });
+
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> finish());
         }
@@ -75,20 +92,20 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void saveTheme(String themeName) {
         prefs.edit().putString("theme", themeName).apply();
-        Toast.makeText(this, "Theme updated!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.theme_updated), Toast.LENGTH_SHORT).show();
         recreate(); 
     }
 
     private void showChangePasscodeDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Set New Caregiver Passcode");
+        builder.setTitle(getString(R.string.change_passcode));
 
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        input.setHint("Enter 4-digit numeric passcode");
+        input.setHint(getString(R.string.change_passcode));
         builder.setView(input);
 
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        builder.setPositiveButton(getString(R.string.save), (dialog, which) -> {
             String newPasscode = input.getText().toString().trim();
             if (newPasscode.length() >= 4) {
                 prefs.edit().putString("passcode", newPasscode).apply();

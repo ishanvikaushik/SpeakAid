@@ -2,12 +2,12 @@ plugins {
     alias(libs.plugins.android.application)
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
-
+def geminiApiKey = project.findProperty("GEMINI_API_KEY") ?: ""
 android {
     namespace 'com.example.speakaid'
     compileSdk {
         version = release(36)
-    }
+            }
 
     defaultConfig {
         applicationId "com.example.speakaid"
@@ -17,6 +17,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "GEMINI_API_KEY", "\"${geminiApiKey}\""
     }
 
     buildTypes {
@@ -29,10 +30,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    
+
     // Enable BuildConfig generation
     buildFeatures {
-        buildConfig = true
+        buildConfig true
     }
 }
 
@@ -43,10 +44,10 @@ dependencies {
     implementation libs.constraintlayout
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'nl.dionsegijn:konfetti-xml:2.0.2'
-    
+
     implementation 'com.google.ai.client.generativeai:generativeai:0.9.0'
     implementation "com.google.guava:guava:31.0.1-android"
-    
+
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

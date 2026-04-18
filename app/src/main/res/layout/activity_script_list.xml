@@ -31,7 +31,7 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:fontFamily="sans-serif-black"
-            android:text="Social Scripts"
+            android:text="@string/social_scripts"
             android:textColor="@color/text_main"
             android:textSize="32sp" />
     </LinearLayout>

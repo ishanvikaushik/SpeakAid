@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.widget.ImageButton;
@@ -15,6 +16,11 @@ public class CommunicateActivity extends AppCompatActivity {
     private TextToSpeech tts;
     private CardView cardFood, cardWater, cardToilet, cardHelp, cardYes, cardNo, cardTired, cardHappy;
     private ImageButton btnBack;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

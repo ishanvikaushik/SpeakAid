@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -16,6 +17,11 @@ public class ParentModeActivity extends AppCompatActivity {
     Button btnExit;
     ImageView btnBack;
     DBHelper db;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +57,15 @@ public class ParentModeActivity extends AppCompatActivity {
         }
         btnExit.setOnClickListener(v -> finish());
     }
+// new fn, not there originally
 
+    @Override
+    protected void onDestroy() {
+        if (db != null) {
+            db.close();
+        }
+        super.onDestroy();
+    }
     private void resetAllProgress() {
         try (Cursor cursor = db.getRoutines()) {
             while (cursor.moveToNext()) {
@@ -62,4 +76,5 @@ public class ParentModeActivity extends AppCompatActivity {
         }
         Toast.makeText(this, "All daily progress has been reset!", Toast.LENGTH_SHORT).show();
     }
+
 }
