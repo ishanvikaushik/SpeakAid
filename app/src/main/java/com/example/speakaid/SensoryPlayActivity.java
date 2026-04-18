@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SensoryPlayActivity extends AppCompatActivity {
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

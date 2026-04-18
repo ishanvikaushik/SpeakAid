@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_light"
@@ -21,14 +22,14 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_no"
             android:rotation="180"
-            android:contentDescription="Back"
-            android:tint="@color/text_main" />
+            android:contentDescription="@string/back"
+            app:tint="@color/text_main" />
 
         <TextView
             android:id="@+id/txtHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Custom"
+            android:text="@string/add_custom_routine_header"
             android:textColor="@color/text_main"
             android:textSize="22sp"
             android:fontFamily="sans-serif-black"
@@ -53,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:hint="Enter Title"
+                android:hint="@string/enter_title"
                 android:padding="20dp"
                 android:textColor="@color/text_main"
                 android:textSize="18sp" />
@@ -63,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:text="Add Steps (One per line):"
+            android:text="@string/add_step"
             android:textColor="@color/text_main"
             android:textSize="18sp"
             android:fontFamily="sans-serif-black" />
@@ -81,7 +82,7 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:gravity="top"
-                android:hint="Step 1\nStep 2"
+                android:hint="@string/steps_hint"
                 android:inputType="textMultiLine"
                 android:padding="20dp"
                 android:textColor="@color/text_main"
@@ -92,7 +93,7 @@
             android:id="@+id/btnSimplifyAI"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="✨ Simplify with AI"
+            android:text="@string/simplify_ai"
             android:backgroundTint="#673AB7"
             android:layout_marginBottom="16dp"
             android:textColor="@color/white"
@@ -112,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif-black"
-                android:text="SAVE TO LIBRARY"
+                android:text="@string/save_to_library"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
         </FrameLayout>

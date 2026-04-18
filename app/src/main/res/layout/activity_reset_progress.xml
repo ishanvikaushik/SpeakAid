@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select routines to reset:"
+        android:text="@string/select_routines"
         android:textColor="@color/text_main"
         android:textSize="22sp"
         android:fontFamily="sans-serif-black"
@@ -26,7 +26,7 @@
         android:id="@+id/btnApplyReset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="RESET SELECTED"
+        android:text="@string/reset_selected"
         android:textSize="18sp"
         android:layout_marginTop="16dp"
         app:cornerRadius="16dp"

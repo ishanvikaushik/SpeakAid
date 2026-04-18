@@ -42,7 +42,7 @@
                     android:id="@+id/txtRoutine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Routine Name"
+                    android:text="@string/routine_name"
                     android:textColor="@color/text_main"
                     android:textSize="24sp"
                     android:fontFamily="sans-serif-black" />
@@ -51,7 +51,7 @@
                     android:id="@+id/txtStepProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Not started"
+                    android:text="@string/not_started"
                     android:textColor="@color/text_secondary"
                     android:textSize="16sp"
                     android:fontFamily="sans-serif-medium" />

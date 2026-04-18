@@ -20,12 +20,12 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_no"
             android:rotation="180"
-            android:contentDescription="Back" />
+            android:contentDescription="@string/back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Communicate"
+            android:text="@string/header_communicate"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#333333"
@@ -35,7 +35,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tap a button to speak"
+        android:text="@string/tap_button"
         android:textSize="16sp"
         android:textColor="#666666"
         android:layout_marginStart="24dp"
@@ -76,7 +76,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Food"
+                    android:text="@string/food"
                     android:textSize="18sp"
                     android:textColor="#333333"/>
             </LinearLayout>
@@ -107,7 +107,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Water"
+                    android:text="@string/water"
                     android:textSize="18sp"
                     android:textColor="#333333"/>
             </LinearLayout>
@@ -138,7 +138,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Toilet"
+                    android:text="@string/toilet"
                     android:textSize="18sp"
                     android:textColor="#333333"/>
             </LinearLayout>
@@ -169,7 +169,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Help"
+                    android:text="@string/help"
                     android:textSize="18sp"
                     android:textColor="#333333"/>
             </LinearLayout>
@@ -200,7 +200,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Yes"
+                    android:text="@string/yes"
                     android:textSize="18sp"
                     android:textColor="#333333"/>
             </LinearLayout>
@@ -231,7 +231,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="No"
+                    android:text="@string/no"
                     android:textSize="18sp"
                     android:textColor="#333333"/>
             </LinearLayout>
@@ -262,7 +262,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tired"
+                    android:text="@string/tired"
                     android:textSize="18sp"
                     android:textColor="#333333"/>
             </LinearLayout>
@@ -293,7 +293,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Happy"
+                    android:text="@string/happy"
                     android:textSize="18sp"
                     android:textColor="#333333"/>
             </LinearLayout>

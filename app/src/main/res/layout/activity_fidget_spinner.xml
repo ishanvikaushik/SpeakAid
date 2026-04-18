@@ -21,13 +21,13 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_no"
             android:rotation="180"
-            android:contentDescription="Back"
+            android:contentDescription="@string/back"
             android:tint="#455A64" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fidget Spinner"
+            android:text="@string/fidget_spinner"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#455A64"
@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Swipe to Spin"
+            android:text="@string/swipe_to_spin"
             android:textSize="22sp"
             android:textColor="#455A64"
             android:layout_centerHorizontal="true"
@@ -58,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="A calm mind is a happy mind"
+            android:text="@string/calm_mind"
             android:textSize="16sp"
             android:textColor="#90A4AE"
             android:layout_alignParentBottom="true"

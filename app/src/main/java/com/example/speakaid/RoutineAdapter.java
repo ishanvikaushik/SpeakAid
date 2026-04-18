@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.util.TypedValue;
@@ -52,6 +53,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         Routine routine = routineList.get(position);
         holder.txtRoutine.setText(routine.title);
         
@@ -66,7 +68,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.ViewHold
         int colorPrimary = typedValue.data;
 
         if (routine.completedDate != null) {
-            holder.txtStepProgress.setText("COMPLETED TODAY!");
+            holder.txtStepProgress.setText(context.getString(R.string.completed_today));
             holder.txtStepProgress.setTextColor(Color.parseColor("#58CC02")); // Duo Green
             holder.itemProgressIndicator.setProgress(100);
             holder.itemProgressIndicator.setIndicatorColor(Color.parseColor("#58CC02"));
@@ -77,10 +79,15 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.ViewHold
             holder.txtStepProgress.setTextColor(Color.parseColor("#AFAFAF"));
             
             if (routine.lastStep == 0) {
-                holder.txtStepProgress.setText("Ready to start (" + totalSteps + " steps)");
+                holder.txtStepProgress.setText(context.getString(R.string.not_started));
                 holder.itemProgressIndicator.setProgress(0);
             } else {
                 int displayProgress = (int) (((float) routine.lastStep / totalSteps) * 100);
+                String progressText = context.getString(R.string.step_progress,
+                        (routine.lastStep + 1),
+                        totalSteps,
+                        displayProgress);
+
                 holder.txtStepProgress.setText("Step " + (routine.lastStep + 1) + " of " + totalSteps + " (" + displayProgress + "%)");
                 holder.itemProgressIndicator.setProgress(displayProgress, true);
             }

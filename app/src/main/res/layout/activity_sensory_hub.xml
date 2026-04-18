@@ -21,12 +21,12 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_no"
             android:rotation="180"
-            android:contentDescription="Back" />
+            android:contentDescription="@string/back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sensory Hub"
+            android:text="@string/sensory_hub"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#333333"
@@ -43,7 +43,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose Your Zen"
+            android:text="@string/choose_zen"
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="#333333"
@@ -73,7 +73,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ZEN CANVAS"
+                    android:text="@string/zen_canvas"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -104,7 +104,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FIDGET SPINNER"
+                    android:text="@string/spinner"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"

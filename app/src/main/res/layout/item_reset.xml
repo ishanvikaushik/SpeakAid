@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginStart="16dp"
-        android:text="Routine Name"
+        android:text="@string/routine_name"
         android:textColor="@color/text_main"
         android:textSize="18sp"
         android:fontFamily="sans-serif-black" />

@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Speakaid">
         <activity
+            android:name=".LocaleHelper"
+            android:exported="false" />
+        <activity
             android:name=".ZenCanvasActivity"
             android:exported="false" />
         <activity

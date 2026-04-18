@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">ಸ್ಪೀಕ್‌ ಏಡ್</string>
+
+    <!-- General Labels -->
+    <string name="back">ಹಿಂದಕ್ಕೆ</string>
+    <string name="next">ಮುಂದೆ</string>
+    <string name="reset">ಮರುಹೊಂದಿಸಿ</string>
+    <string name="save">ಉಳಿಸಿ</string>
+    <string name="finish">ಮುಕ್ತಾಯ</string>
+    <string name="yes">ಹೌದು</string>
+    <string name="no">ಇಲ್ಲ</string>
+    <string name="error_fill_fields">ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಕ್ಷೇತ್ರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ</string>
+
+    <!-- Home Screen -->
+    <string name="what_to_do">ಇಂದು ನಾವು ಏನು ಮಾಡೋಣ?</string>
+    <string name="mini_routines">ಮಿನಿ ದಿನಚರಿಗಳು</string>
+    <string name="social_scripts">ಸಾಮಾಜಿಕ ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳು</string>
+    <string name="header_communicate">ಸಂವಹನ</string>
+    <string name="sensory_play">ಸಂವೇದನಾ ಆಟ</string>
+    <string name="caregiver">ಆರೈಕೆದಾರರ ಮೋಡ್</string>
+    <string name="settings">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
+
+    <!-- add_custom.xml & Activity -->
+    <string name="add_custom_routine_header">ಕಸ್ಟಮ್ ದಿನಚರಿಯನ್ನು ಸೇರಿಸಿ</string>
+    <string name="add_custom_script_header">ಕಸ್ಟಮ್ ಸ್ಕ್ರಿಪ್ಟ್ ಸೇರಿಸಿ</string>
+    <string name="hint_routine_title">ದಿನಚರಿಯ ಶೀರ್ಷಿಕೆ (ಉದಾ: ಬಟ್ಟೆ ಒಗೆಯುವುದು)</string>
+    <string name="hint_script_title">ಸ್ಕ್ರಿಪ್ಟ್ ಶೀರ್ಷಿಕೆ (ಉದಾ: ಆಹಾರ ಆರ್ಡರ್ ಮಾಡುವುದು)</string>
+    <string name="enter_title">ಶೀರ್ಷಿಕೆಯನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="add_step">ಹಂತಗಳನ್ನು ಸೇರಿಸಿ (ಪ್ರತಿ ಸಾಲಿಗೆ ಒಂದು):</string>
+    <string name="steps_hint">ಹಂತ 1\nಹಂತ 2</string>
+    <string name="simplify_ai">✨ AI ನೊಂದಿಗೆ ಸರಳಗೊಳಿಸಿ</string>
+    <string name="save_to_library">ಲೈಬ್ರರಿಗೆ ಉಳಿಸಿ</string>
+    <string name="msg_ai_working">AI ನಿಮ್ಮ ಹಂತಗಳನ್ನು ಸರಳಗೊಳಿಸುತ್ತಿದೆ...</string>
+    <string name="msg_ai_success">ಹಂತಗಳನ್ನು ಸರಳಗೊಳಿಸಲಾಗಿದೆ!</string>
+    <string name="msg_routine_saved">ದಿನಚರಿಯನ್ನು ಉಳಿಸಲಾಗಿದೆ!</string>
+    <string name="msg_script_saved">ಸ್ಕ್ರಿಪ್ಟ್ ಉಳಿಸಲಾಗಿದೆ!</string>
+    <string name="msg_enter_steps">ದಯವಿಟ್ಟು ಮೊದಲು ಕೆಲವು ಹಂತಗಳನ್ನು ನಮೂದಿಸಿ</string>
+
+    <!-- bubble_pop.xml -->
+    <string name="pop_tap">ಪಾಪ್ ಮಾಡಲು ಟ್ಯಾಪ್ ಮಾಡಿ</string>
+
+    <!-- communicate.xml -->
+    <string name="tap_button">ಮಾತನಾಡಲು ಬಟನ್ ಟ್ಯಾಪ್ ಮಾಡಿ</string>
+    <string name="food">ಆಹಾರ</string>
+    <string name="water">ನೀರು</string>
+    <string name="toilet">ಶೌಚಾಲಯ</string>
+    <string name="help">ಸಹಾಯ</string>
+    <string name="tired">ಸುಸ್ತಾಗಿದೆ</string>
+    <string name="happy">ಸಂತೋಷವಾಗಿದೆ</string>
+
+    <!-- fidget_spinner.xml -->
+    <string name="fidget_spinner">ಫಿಡ್ಜೆಟ್ ಸ್ಪಿನ್ನರ್</string>
+    <string name="swipe_to_spin">ತಿರುಗಿಸಲು ಸ್ವೈಪ್ ಮಾಡಿ</string>
+    <string name="calm_mind">ಶಾಂತ ಮನಸ್ಸು ಸಂತೋಷದ ಮನಸ್ಸು</string>
+
+    <!-- parent_mode.xml -->
+    <string name="caregiver_control">ಆರೈಕೆದಾರರ ನಿಯಂತ್ರಣ</string>
+    <string name="add_custom_routine">ಕಸ್ಟಮ್ ದಿನಚರಿಯನ್ನು ಸೇರಿಸಿ</string>
+    <string name="add_custom_script">ಕಸ್ಟಮ್ ಸ್ಕ್ರಿಪ್ಟ್ ಸೇರಿಸಿ</string>
+    <string name="reset_all_daily_progress">ಎಲ್ಲಾ ದೈನಂದಿನ ಪ್ರಗತಿಯನ್ನು ಮರುಹೊಂದಿಸಿ</string>
+    <string name="exit_caregiver_mode">ಆರೈಕೆದಾರರ ಮೋಡ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿ</string>
+    <string name="msg_reset_success">ಎಲ್ಲಾ ದೈನಂದಿನ ಪ್ರಗತಿಯನ್ನು ಮರುಹೊಂದಿಸಲಾಗಿದೆ!</string>
+
+    <!-- reset_progress.xml -->
+    <string name="select_routines">ಮರುಹೊಂದಿಸಲು ದಿನಚರಿಗಳನ್ನು ಆರಿಸಿ:</string>
+    <string name="reset_selected">ಆಯ್ದದ್ದನ್ನು ಮರುಹೊಂದಿಸಿ</string>
+
+    <!-- routine_player.xml -->
+    <string name="wake_up">ಎದ್ದೇಳಿ</string>
+    <string name="get_ready">ಸಿದ್ಧರಾಗಿ... %1$d</string>
+    <string name="routine_complete">ಅದ್ಭುತ ಕೆಲಸ!</string>
+
+    <!-- script_player.xml -->
+    <string name="say_hello">ಹಲೋ ಹೇಳಿ</string>
+    <string name="script_transition">ಮುಂದಿನ ಭಾಗ ಇನ್ನು... %1$d</string>
+    <string name="script_complete">ಸೂಪರ್ ಸ್ಟಾರ್!</string>
+
+    <!-- sensory_hub.xml -->
+    <string name="choose_zen">ನಿಮ್ಮ ಜೆನ್ ಆರಿಸಿ</string>
+    <string name="sensory_hub">ಸೆನ್ಸರಿ ಹಬ್</string>
+    <string name="zen_canvas">ಜೆನ್ ಕ್ಯಾನ್ವಾಸ್</string>
+    <string name="spinner">ಫಿಡ್ಜೆಟ್ ಸ್ಪಿನ್ನರ್</string>
+
+    <!-- sensory_play.xml -->
+    <string name="screen_reveal">ಬಹಿರಂಗಪಡಿಸಲು ಪರದೆಯನ್ನು ನಿಧಾನವಾಗಿ ಅಳಿಸಿ</string>
+
+    <!-- settings.xml -->
+    <string name="choose_theme">ನಿಮ್ಮ ಥೀಮ್ ಆರಿಸಿ</string>
+    <string name="classic">ಕ್ಲಾಸಿಕ್</string>
+    <string name="calm">ಶಾಂತ</string>
+    <string name="ocean">ಸಾಗರ</string>
+    <string name="sunset">ಸೂರ್ಯಾಸ್ತ</string>
+    <string name="sound">ಧ್ವನಿ (TTS)</string>
+    <string name="vibration">ಕಂಪನ</string>
+    <string name="motion">ಚಲನೆಯನ್ನು ಕಡಿಮೆ ಮಾಡಿ</string>
+    <string name="change_passcode">ಪಾಸ್‌ಕೋಡ್ ಬದಲಾಯಿಸಿ</string>
+    <string name="change_lang">ಇಂಗ್ಲಿಷ್‌ಗೆ ಬದಲಾಯಿಸಿ</string>
+    <string name="theme_updated">ಥೀಮ್ ನವೀಕರಿಸಲಾಗಿದೆ!</string>
+
+    <!-- List Items Placeholders -->
+    <string name="routine_name">ದಿನಚರಿ</string>
+    <string name="not_started">ಪ್ರಾರಂಭಿಸಿಲ್ಲ</string>
+    <string name="completed_today">ಇಂದು ಪೂರ್ಣಗೊಂಡಿದೆ!</string>
+    <string name="script_title">ಸ್ಕ್ರಿಪ್ಟ್</string>
+    <string name="step_progress">ಹಂತ %1$d / %2$d (%3$d%%)</string>
+
+    <!-- Default Seed Data -->
+    <string name="morning_routine">ಬೆಳಗಿನ ದಿನಚರಿ</string>
+    <string name="school_routine">ಶಾಲೆಯ ದಿನಚರಿ</string>
+    <string name="night_routine">ರಾತ್ರಿಯ ದಿನಚರಿ</string>
+    <string name="brush_teeth">ಹಲ್ಲುಜ್ಜುವುದು</string>
+    <string name="get_dressed">ಬಟ್ಟೆ ಧರಿಸುವುದು</string>
+    <string name="pack_bag">ಶಾಲೆಯ ಬ್ಯಾಗ್ ಪ್ಯಾಕ್ ಮಾಡುವುದು</string>
+    <string name="wear_uniform">ಯೂನಿಫಾರ್ಮ್ ಧರಿಸುವುದು</string>
+    <string name="go_to_bed">ಮಲಗಲು ಹೋಗುವುದು</string>
+    <string name="ask_help">ಸಹಾಯಕ್ಕಾಗಿ ಕೇಳಿ</string>
+    <string name="look_person">ವ್ಯಕ್ತಿಯನ್ನು ನೋಡಿ</string>
+    <string name="smile_if_comfy">ಅನುಕೂಲಕರವಾಗಿದ್ದರೆ ನಗು</string>
+    <string name="ask_how_are">ಅವರು ಹೇಗಿದ್ದಾರೆ ಎಂದು ಕೇಳಿ</string>
+    <string name="get_attention">ಅವರ ಗಮನ ಸೆಳೆಯಿರಿ</string>
+    <string name="ask_politely">ನಯವಾಗಿ ಕೇಳಿ</string>
+    <string name="explain_need">ನಿಮ್ಮ ಅಗತ್ಯವನ್ನು ವಿವರಿಸಿ</string>
+
+</resources>

@@ -31,7 +31,7 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:fontFamily="sans-serif-black"
-            android:text="Mini Routines"
+            android:text="@string/mini_routines"
             android:textColor="@color/text_main"
             android:textSize="32sp" />
     </LinearLayout>

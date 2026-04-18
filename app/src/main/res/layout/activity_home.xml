@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="What shall we do today?"
+        android:text="@string/what_to_do"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="#4B4B4B"
@@ -50,7 +50,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="MINI ROUTINES"
+                    android:text="@string/mini_routines"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -82,7 +82,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SOCIAL SCRIPTS"
+                    android:text="@string/social_scripts"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="COMMUNICATE"
+                    android:text="@string/header_communicate"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -146,7 +146,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SENSORY PLAY"
+                    android:text="@string/sensory_play"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -160,7 +160,7 @@
         android:id="@+id/btnSettings"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Settings"
+        android:text="@string/settings"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/border_gray"
         android:textColor="@color/text_main"
@@ -170,7 +170,7 @@
         android:id="@+id/btnParentMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Caregiver Mode"
+        android:text="@string/caregiver"
         android:textColor="#AFAFAF"
         android:textSize="14sp"
         android:layout_marginTop="16dp"

@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -15,6 +16,11 @@ public class ScriptListActivity extends AppCompatActivity {
     DBHelper db;
     ScriptAdapter adapter;
     ImageView btnBack;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

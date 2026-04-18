@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Zen Canvas"
+            android:text="@string/zen_canvas"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -55,7 +55,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Slowly clear the screen to reveal"
+            android:text="@string/screen_reveal"
             android:textSize="18sp"
             android:textColor="#FFFFFF"
             android:layout_centerHorizontal="true"
@@ -70,7 +70,7 @@
             android:id="@+id/btnReset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reset"
+            android:text="@string/reset"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="32dp"

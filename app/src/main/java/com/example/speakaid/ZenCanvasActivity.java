@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,10 @@ public class ZenCanvasActivity extends AppCompatActivity {
     private ScratchView scratchView;
     private Button btnReset;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

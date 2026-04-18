@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -42,6 +43,11 @@ public class RoutinePlayerActivity extends AppCompatActivity {
     SharedPreferences prefs;
     KonfettiView konfettiView;
     DBHelper db;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +106,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         btnPrevFrame.setOnClickListener(v -> {
             if (isCompleted) {
                 isCompleted = false;
-                btnNextText.setText("NEXT");
+                btnNextText.setText(getString(R.string.next));//btnNextText.setText("NEXT");
                 showStep();
             } else if (currentStep > 0) {
                 currentStep--;
@@ -158,8 +164,8 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         db.markRoutineCompleted(routineId, today);
 
-        txtStep.setText("AMAZING JOB!");
-        btnNextText.setText("FINISH");
+        txtStep.setText(getString(R.string.routine_complete));//txtStep.setText("AMAZING JOB!");
+        btnNextText.setText(getString(R.string.finish));//btnNextText.setText("FINISH");
         progressIndicator.setProgress(100);
         
         if (konfettiView != null) {
@@ -177,7 +183,8 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         new Thread(() -> {
             for (int i = 3; i >= 1; i--) {
                 int finalI = i;
-                runOnUiThread(() -> txtTransition.setText("Get ready... " + finalI));
+                runOnUiThread(() -> txtTransition.setText(getString(R.string.get_ready, finalI)));
+                // runOnUiThread(() -> txtTransition.setText("Get ready... " + finalI));//old code
                 try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
             }
             runOnUiThread(() -> {

@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-black"
                     android:gravity="center"
-                    android:text="SAY HELLO"
+                    android:text="@string/say_hello"
                     android:textColor="@color/text_main"
                     android:textSize="36sp" />
 
@@ -123,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="sans-serif-black"
-                    android:text="BACK"
+                    android:text="@string/back"
                     android:textColor="@color/text_main"
                     android:textSize="18sp" />
             </FrameLayout>
@@ -143,7 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="sans-serif-black"
-                    android:text="NEXT"
+                    android:text="@string/next"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
             </FrameLayout>
