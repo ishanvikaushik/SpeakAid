@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -37,7 +39,7 @@ public class HelpActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private HuggingFaceService hfService;
 
-    // Securely loaded from local.properties
+    // Securely loaded from BuildConfig
     private static final String HF_TOKEN = "Bearer " + BuildConfig.HF_API_TOKEN;
 
     @Override
@@ -109,7 +111,7 @@ public class HelpActivity extends AppCompatActivity {
                     List<HuggingFaceService.Response> results = response.body().get(0);
                     checkEmotions(results);
                 } else {
-                    Log.e("HF_ERROR", "Error: " + response.code());
+                    Log.e("HF_ERROR", "Error Code: " + response.code());
                     offlineCheck(text); // Fallback to offline on API error
                 }
             }
@@ -118,6 +120,7 @@ public class HelpActivity extends AppCompatActivity {
             public void onFailure(Call<List<List<HuggingFaceService.Response>>> call, Throwable t) {
                 btnSubmit.setEnabled(true);
                 btnSubmit.setText("TALK TO ME");
+                Log.e("HF_ERROR", "Failure: " + t.getMessage());
                 offlineCheck(text);
             }
         });
@@ -126,8 +129,8 @@ public class HelpActivity extends AppCompatActivity {
     private void checkEmotions(List<HuggingFaceService.Response> results) {
         boolean distressDetected = false;
         for (HuggingFaceService.Response res : results) {
-            // bhadresh-savani/bert-base-uncased-emotion labels: fear, anger, joy, sadness, love, surprise
-            if ((res.label.equals("fear") || res.label.equals("anger") || res.label.equals("sadness")) && res.score > 0.7) {
+            // Check for fear, anger, or sadness with high confidence
+            if ((res.label.equalsIgnoreCase("fear") || res.label.equalsIgnoreCase("anger") || res.label.equalsIgnoreCase("sadness")) && res.score > 0.6) {
                 distressDetected = true;
                 break;
             }
@@ -142,7 +145,7 @@ public class HelpActivity extends AppCompatActivity {
 
     private void offlineCheck(String text) {
         String lowerText = text.toLowerCase();
-        String[] keywords = {"scared", "angry", "help", "stop", "overwhelmed", "hate", "hurt", "kill", "die"};
+        String[] keywords = {"scared", "angry", "help", "stop", "overwhelmed", "hate", "hurt", "kill", "die", "sad"};
         
         boolean detected = false;
         for (String word : keywords) {
@@ -165,6 +168,8 @@ public class HelpActivity extends AppCompatActivity {
         String phone = prefs.getString("emergency_phone", "");
         if (!phone.isEmpty()) {
             sendSms(phone, "SpeakAid Alert: High distress detected. Please check on the user.");
+        } else {
+            Toast.makeText(this, "No caregiver number saved in Settings!", Toast.LENGTH_SHORT).show();
         }
 
         // Switch to grounding mode immediately
@@ -178,12 +183,28 @@ public class HelpActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_CODE);
         } else {
             try {
-                SmsManager smsManager = SmsManager.getDefault();
+                SmsManager smsManager;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    smsManager = getSystemService(SmsManager.class);
+                } else {
+                    smsManager = SmsManager.getDefault();
+                }
+                
                 smsManager.sendTextMessage(phone, null, message, null, null);
-                Log.d("SMS", "Alert sent to " + phone);
+                Log.d("SMS", "Triggered send to " + phone);
+                Toast.makeText(this, "Alert SMS sent to " + phone, Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
-                Toast.makeText(this, "Failed to send SMS alert.", Toast.LENGTH_SHORT).show();
+                Log.e("SMS_ERROR", "Failed: " + e.getMessage());
+                Toast.makeText(this, "Standard SMS failed. This is normal on emulators.", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == SMS_PERMISSION_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            triggerAlert();
         }
     }
 }

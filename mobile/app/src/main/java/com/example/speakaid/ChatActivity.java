@@ -35,9 +35,10 @@ public class ChatActivity extends AppCompatActivity {
 
     private Socket mSocket;
     private String roomId;
+    private String userRole;
 
-    // TODO: Replace with your actual Node.js server URL
-    private static final String SERVER_URL = "http://10.0.2.2:3000"; // Default for local Android Emulator
+    // Replace with your actual Render URL
+    private static final String SERVER_URL = "https://speakaid.onrender.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,10 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         roomId = getIntent().getStringExtra("roomId");
+        userRole = getIntent().getStringExtra("userRole");
+        
         if (roomId == null) roomId = "General";
+        if (userRole == null) userRole = "User";
 
         initViews();
         setupSocket();
@@ -60,7 +64,7 @@ public class ChatActivity extends AppCompatActivity {
         txtRoomName = findViewById(R.id.txtRoomName);
         viewConnectionStatus = findViewById(R.id.viewConnectionStatus);
 
-        txtRoomName.setText("Room: " + roomId);
+        txtRoomName.setText("Chat: " + roomId);
         btnBack.setOnClickListener(v -> finish());
 
         messages = new ArrayList<>();
@@ -69,6 +73,9 @@ public class ChatActivity extends AppCompatActivity {
         recyclerMessages.setAdapter(adapter);
 
         btnSend.setOnClickListener(v -> sendMessage());
+        
+        // Initial state: connecting
+        Toast.makeText(this, "Connecting to server...", Toast.LENGTH_SHORT).show();
     }
 
     private void setupSocket() {
@@ -82,10 +89,17 @@ public class ChatActivity extends AppCompatActivity {
         mSocket.on(Socket.EVENT_CONNECT, args -> runOnUiThread(() -> {
             viewConnectionStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFF4CAF50)); // Green
             mSocket.emit("joinRoom", roomId);
+            Toast.makeText(this, "Connected!", Toast.LENGTH_SHORT).show();
         }));
 
         mSocket.on(Socket.EVENT_DISCONNECT, args -> runOnUiThread(() -> {
             viewConnectionStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFFFF5252)); // Red
+        }));
+
+        mSocket.on(Socket.EVENT_CONNECT_ERROR, args -> runOnUiThread(() -> {
+            Log.e("ChatActivity", "Connection Error: " + args[0]);
+            // Often happens if Render is sleeping
+            viewConnectionStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFFFFC107)); // Yellow
         }));
 
         mSocket.on("receiveMessage", onNewMessage);
@@ -97,8 +111,8 @@ public class ChatActivity extends AppCompatActivity {
         JSONObject data = (JSONObject) args[0];
         try {
             String text = data.getString("text");
-            // Check if it's from current user or not (simplified for now)
-            addMessage(text, false);
+            String sender = data.optString("senderName", "Other");
+            addMessage(text, false, sender);
         } catch (JSONException e) {
             Log.e("ChatActivity", "JSON Parse error", e);
         }
@@ -108,25 +122,26 @@ public class ChatActivity extends AppCompatActivity {
         String text = editMessage.getText().toString().trim();
         if (text.isEmpty()) return;
 
-        if (mSocket.connected()) {
+        if (mSocket != null && mSocket.connected()) {
             JSONObject data = new JSONObject();
             try {
                 data.put("room", roomId);
                 data.put("text", text);
+                data.put("senderName", userRole);
                 mSocket.emit("chatMessage", data);
                 
-                addMessage(text, true);
+                addMessage(text, true, "Me");
                 editMessage.setText("");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         } else {
-            Toast.makeText(this, "Not connected to server", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Still connecting... please wait", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void addMessage(String text, boolean isSent) {
-        messages.add(new Message(text, isSent));
+    private void addMessage(String text, boolean isSent, String sender) {
+        messages.add(new Message(text, isSent, sender));
         adapter.notifyItemInserted(messages.size() - 1);
         recyclerMessages.scrollToPosition(messages.size() - 1);
     }

@@ -20,11 +20,34 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter your Shared Room ID to start chatting in real-time."
+        android:text="Select your role and enter Room ID to start."
         android:textSize="16sp"
         android:textColor="#666666"
         android:gravity="center"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginBottom="24dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgRole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="24dp">
+        
+        <RadioButton
+            android:id="@+id/rbTeacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Teacher"
+            android:paddingEnd="20dp"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rbCaregiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Caregiver"/>
+    </RadioGroup>
 
     <EditText
         android:id="@+id/editRoomId"
@@ -43,7 +66,7 @@
         android:layout_height="70dp"
         android:text="JOIN CHAT"
         android:textSize="18sp"
-        android:backgroundTint="@color/duo_purple"
+        android:backgroundTint="#6200EE"
         android:fontFamily="sans-serif-black"/>
 
     <ImageButton
@@ -53,7 +76,6 @@
         android:layout_marginTop="32dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_no"
-        android:rotation="180"
         android:contentDescription="Back" />
 
 </LinearLayout>

@@ -10,6 +10,25 @@ const io = new Server(server, {
   }
 });
 
+// ... existing imports (express, http, socket.io) ...
+
+io.on('connection', (
+  socket) => {    socket.on('joinRoom', (roomId) => {
+        socket.join(roomId);
+    });
+
+    socket.on('chatMessage', (data) => {
+        const { room, text, senderName } = data;
+        // Broadcast to all other users in this specific room
+        socket.to(room).emit('receiveMessage', {
+            text: text,
+            senderName: senderName,
+            timestamp: Date.now()
+        });
+    });
+});
+
+
 app.get('/', (req, res) => {
   res.send('SpeakAid Socket Server is running');
 });

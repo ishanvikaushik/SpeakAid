@@ -13,11 +13,12 @@ public interface HuggingFaceService {
     }
 
     class Response {
-        public String label; // "fear", "anger", "sadness", etc.
+        public String label; // "joy", "fear", "anger", "sadness", etc.
         public double score;
     }
 
-    @POST("models/bhadresh-savani/bert-base-uncased-emotion")
+    // Using a more robust emotion detection model
+    @POST("models/j-hartmann/emotion-english-distilroberta-base")
     Call<List<List<Response>>> detectEmotion(
         @Header("Authorization") String token,
         @Body Request body

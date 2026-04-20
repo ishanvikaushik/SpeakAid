@@ -21,26 +21,29 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_message, parent, false);
         return new ChatViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Message msg = messages.get(position);
-        holder.textView.setText(msg.getText());
+        holder.txtMessage.setText(msg.getText());
 
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.textView.getLayoutParams();
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.layoutMessageBubble.getLayoutParams();
         if (msg.isSent()) {
             params.gravity = Gravity.END;
-            holder.textView.setBackgroundResource(R.drawable.duo_button_blue);
-            holder.textView.setTextColor(0xFFFFFFFF);
+            holder.layoutMessageBubble.setBackgroundResource(R.drawable.duo_button_blue);
+            holder.txtMessage.setTextColor(0xFFFFFFFF);
+            holder.txtSender.setVisibility(View.GONE);
         } else {
             params.gravity = Gravity.START;
-            holder.textView.setBackgroundResource(R.drawable.duo_card_white);
-            holder.textView.setTextColor(0xFF333333);
+            holder.layoutMessageBubble.setBackgroundResource(R.drawable.duo_card_white);
+            holder.txtMessage.setTextColor(0xFF333333);
+            holder.txtSender.setText(msg.getSenderName());
+            holder.txtSender.setVisibility(View.VISIBLE);
         }
-        holder.textView.setLayoutParams(params);
+        holder.layoutMessageBubble.setLayoutParams(params);
     }
 
     @Override
@@ -49,11 +52,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
     static class ChatViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
+        TextView txtMessage, txtSender;
+        LinearLayout layoutMessageBubble;
+
         ChatViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(android.R.id.text1);
-            textView.setPadding(32, 16, 32, 16);
+            txtMessage = itemView.findViewById(R.id.txtMessage);
+            txtSender = itemView.findViewById(R.id.txtSender);
+            layoutMessageBubble = itemView.findViewById(R.id.layoutMessageBubble);
         }
     }
 }
