@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_no"
+            android:rotation="180"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accessibility"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"/>
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchSound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sound (Text-to-Speech)"
+        android:textSize="18sp"
+        android:padding="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchVibration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vibration"
+        android:textSize="18sp"
+        android:padding="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchMotion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reduce Motion"
+        android:textSize="18sp"
+        android:padding="8dp"
+        android:layout_marginBottom="24dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Emergency Contact"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/editPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Caregiver Phone (for alerts)"
+        android:inputType="phone"
+        android:background="@drawable/duo_card_white"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnSavePhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SAVE EMERGENCY CONTACT"
+        android:backgroundTint="#F44336"
+        android:layout_marginBottom="24dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Caregiver Settings"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"/>
+
+    <FrameLayout
+        android:id="@+id/btnChangePasscodeFrame"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/duo_button_blue"
+        android:clickable="true"
+        android:focusable="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="CHANGE PASSCODE"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,16 +1,30 @@
+# OS and IDE Files
+.DS_Store
+.idea/
 *.iml
-.gradle
-.idea
-/local.properties
+*.swp
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+
+# --- Mobile (Android) ---
+mobile/.gradle/
+mobile/build/
+mobile/captures/
+mobile/local.properties
+mobile/.externalNativeBuild
+mobile/.cxx
+# Root level catch-alls if you haven't moved files yet
+/local.properties
 local.properties
+/build
+
+# --- Server (Node.js) ---
+server/node_modules/
+server/.env
+server/npm-debug.log
+server/yarn-error.log
+server/.DS_Store

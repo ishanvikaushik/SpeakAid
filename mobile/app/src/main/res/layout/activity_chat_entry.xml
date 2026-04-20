@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#F8F9FA">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Communication Hub"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif-black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter your Shared Room ID to start chatting in real-time."
+        android:textSize="16sp"
+        android:textColor="#666666"
+        android:gravity="center"
+        android:layout_marginBottom="32dp"/>
+
+    <EditText
+        android:id="@+id/editRoomId"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:hint="Enter Room ID (e.g. Amit2024)"
+        android:background="@drawable/duo_card_white"
+        android:padding="16dp"
+        android:textSize="18sp"
+        android:layout_marginBottom="24dp"
+        android:inputType="textCapCharacters"/>
+
+    <Button
+        android:id="@+id/btnJoinChat"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="JOIN CHAT"
+        android:textSize="18sp"
+        android:backgroundTint="@color/duo_purple"
+        android:fontFamily="sans-serif-black"/>
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_no"
+        android:rotation="180"
+        android:contentDescription="Back" />
+
+</LinearLayout>
