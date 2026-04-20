@@ -6,10 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "speakaid.db";
-    private static final int DB_VERSION = 3; // Incremented to version 3
+    private static final int DB_VERSION = 6;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -17,43 +22,22 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-        // Routine table with lastStep and completedDate
-        db.execSQL("CREATE TABLE Routine (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "title TEXT, " +
-                "lastStep INTEGER DEFAULT 0, " +
-                "completedDate TEXT)"); // Store date as "YYYY-MM-DD"
-
-        // Step table
-        db.execSQL("CREATE TABLE Step (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "routineId INTEGER, " +
-                "title TEXT, " +
-                "stepOrder INTEGER)");
-
-        db.execSQL("CREATE TABLE Script (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "title TEXT)");
-
-        db.execSQL("CREATE TABLE ScriptStep (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "scriptId INTEGER, " +
-                "title TEXT, " +
-                "stepOrder INTEGER)");
+        db.execSQL("CREATE TABLE Routine (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, lastStep INTEGER DEFAULT 0, completedDate TEXT)");
+        db.execSQL("CREATE TABLE Step (id INTEGER PRIMARY KEY AUTOINCREMENT, routineId INTEGER, title TEXT, stepOrder INTEGER)");
+        db.execSQL("CREATE TABLE Script (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT)");
+        db.execSQL("CREATE TABLE ScriptStep (id INTEGER PRIMARY KEY AUTOINCREMENT, scriptId INTEGER, title TEXT, stepOrder INTEGER)");
+        db.execSQL("CREATE TABLE CustomPhrase (id INTEGER PRIMARY KEY AUTOINCREMENT, phrase TEXT, iconName TEXT)");
+        db.execSQL("CREATE TABLE DailyBadges (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT UNIQUE, badgeType TEXT)");
+        db.execSQL("CREATE TABLE Badges (id INTEGER PRIMARY KEY AUTOINCREMENT, routineTitle TEXT UNIQUE, count INTEGER DEFAULT 0)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {
-            db.execSQL("ALTER TABLE Routine ADD COLUMN lastStep INTEGER DEFAULT 0");
-        }
-        if (oldVersion < 3) {
-            db.execSQL("ALTER TABLE Routine ADD COLUMN completedDate TEXT");
-        }
+        if (oldVersion < 4) db.execSQL("CREATE TABLE IF NOT EXISTS CustomPhrase (id INTEGER PRIMARY KEY AUTOINCREMENT, phrase TEXT, iconName TEXT)");
+        if (oldVersion < 5) db.execSQL("CREATE TABLE IF NOT EXISTS DailyBadges (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT UNIQUE, badgeType TEXT)");
+        if (oldVersion < 6) db.execSQL("CREATE TABLE IF NOT EXISTS Badges (id INTEGER PRIMARY KEY AUTOINCREMENT, routineTitle TEXT UNIQUE, count INTEGER DEFAULT 0)");
     }
 
-    // 🔹 Insert Routine
     public long insertRoutine(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -62,7 +46,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert("Routine", null, values);
     }
 
-    // 🔹 Update Progress
     public void updateRoutineProgress(int id, int lastStep) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -70,24 +53,89 @@ public class DBHelper extends SQLiteOpenHelper {
         db.update("Routine", values, "id = ?", new String[]{String.valueOf(id)});
     }
 
-    // 🔹 Mark as Completed for today
     public void markRoutineCompleted(int id, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("lastStep", 0);
         values.put("completedDate", date);
         db.update("Routine", values, "id = ?", new String[]{String.valueOf(id)});
+        awardRoutineBadge(getRoutineTitle(id));
+        if (areAllRoutinesCompletedToday(date)) earnBadge(date);
     }
 
-    // 🔹 Reset completion status (e.g. if user wants to start again or for next day check)
     public void resetRoutineCompletion(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("completedDate", (String)null);
+        values.put("lastStep", 0);
         db.update("Routine", values, "id = ?", new String[]{String.valueOf(id)});
     }
 
-    // 🔹 Insert Step
+    private String getRoutineTitle(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT title FROM Routine WHERE id = ?", new String[]{String.valueOf(id)});
+        String title = "Unknown";
+        if (cursor.moveToFirst()) title = cursor.getString(0);
+        cursor.close();
+        return title;
+    }
+
+    private boolean areAllRoutinesCompletedToday(String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM Routine WHERE completedDate != ? OR completedDate IS NULL", new String[]{date});
+        cursor.moveToFirst();
+        int remaining = cursor.getInt(0);
+        cursor.close();
+        return remaining == 0;
+    }
+
+    private void awardRoutineBadge(String title) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT OR IGNORE INTO Badges (routineTitle, count) VALUES (?, 0)", new String[]{title});
+        db.execSQL("UPDATE Badges SET count = count + 1 WHERE routineTitle = ?", new String[]{title});
+    }
+
+    public Cursor getAllBadges() {
+        return this.getReadableDatabase().rawQuery("SELECT * FROM Badges", null);
+    }
+
+    public void earnBadge(String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("date", date);
+        values.put("badgeType", "DailyStar");
+        db.insertWithOnConflict("DailyBadges", null, values, SQLiteDatabase.CONFLICT_IGNORE);
+    }
+
+    public int getStreak() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Calendar cal = Calendar.getInstance();
+        int streak = 0;
+        while (true) {
+            String date = sdf.format(cal.getTime());
+            Cursor cursor = db.rawQuery("SELECT * FROM DailyBadges WHERE date = ?", new String[]{date});
+            if (cursor.getCount() > 0) {
+                streak++;
+                cal.add(Calendar.DATE, -1);
+            } else {
+                cursor.close();
+                break;
+            }
+            cursor.close();
+        }
+        return streak;
+    }
+
+    public int getTotalStars() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM DailyBadges", null);
+        int count = 0;
+        if (cursor.moveToFirst()) count = cursor.getInt(0);
+        cursor.close();
+        return count;
+    }
+
     public void insertStep(long routineId, String title, int order) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -113,54 +161,39 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert("ScriptStep", null, values);
     }
 
-    // 🔹 Get all routines
-    public Cursor getRoutines() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM Routine", null);
+    public void insertCustomPhrase(String phrase, String iconName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("phrase", phrase);
+        values.put("iconName", iconName);
+        db.insert("CustomPhrase", null, values);
     }
 
-    // 🔹 Get steps for a routine
+    public Cursor getRoutines() {
+        return this.getReadableDatabase().rawQuery("SELECT * FROM Routine", null);
+    }
+
     public Cursor getSteps(int routineId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery(
-                "SELECT * FROM Step WHERE routineId = " + routineId + " ORDER BY stepOrder",
-                null
-        );
+        return this.getReadableDatabase().rawQuery("SELECT * FROM Step WHERE routineId = " + routineId + " ORDER BY stepOrder", null);
     }
 
     public Cursor getScripts() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM Script", null);
+        return this.getReadableDatabase().rawQuery("SELECT * FROM Script", null);
     }
 
     public Cursor getScriptSteps(int scriptId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery(
-                "SELECT * FROM ScriptStep WHERE scriptId = " + scriptId + " ORDER BY stepOrder",
-                null
-        );
+        return this.getReadableDatabase().rawQuery("SELECT * FROM ScriptStep WHERE scriptId = " + scriptId + " ORDER BY stepOrder", null);
     }
 
-    public boolean isStepTableEmpty() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM Step", null);
-        cursor.moveToFirst();
-        int count = cursor.getInt(0);
-        cursor.close();
-        return count == 0;
+    public Cursor getCustomPhrases() {
+        return this.getReadableDatabase().rawQuery("SELECT * FROM CustomPhrase", null);
     }
-    // new fn
+
     public void resetAllRoutines() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.beginTransaction();
-        try {
-            ContentValues values = new ContentValues();
-            values.put("lastStep", 0);
-            values.put("completedDate", (String)null);
-            db.update("Routine", values, null, null);
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
+        ContentValues values = new ContentValues();
+        values.put("lastStep", 0);
+        values.put("completedDate", (String)null);
+        db.update("Routine", values, null, null);
     }
 }

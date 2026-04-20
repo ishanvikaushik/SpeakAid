@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:fitsSystemWindows="true">
+
+    <!-- 1. FULL PAGE BACKGROUND IMAGE (The hidden layer) -->
+    <ImageView
+        android:id="@+id/imgHidden"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/soothe"
+        android:scaleType="centerCrop" />
+
+    <!-- 2. THE SCRATCH LAYER (On top of image) -->
+    <com.example.speakaid.ScratchView
+        android:id="@+id/scratchView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 3. TOP CONTROLS -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_no"
+            android:rotation="180"
+            android:contentDescription="@string/back"
+            android:tint="#455A64"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RESET"
+            android:backgroundTint="#455A64"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="sans-serif-black" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:text="@string/screen_reveal"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-medium"
+        android:elevation="10dp"/>
+
+</RelativeLayout>

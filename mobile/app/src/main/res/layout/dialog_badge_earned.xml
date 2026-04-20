@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/earnedBadgeCard"
+    android:layout_width="280dp"
+    android:layout_height="340dp"
+    android:layout_gravity="center"
+    app:cardCornerRadius="40dp"
+    app:cardElevation="20dp"
+    app:strokeWidth="4dp"
+    app:strokeColor="#FFD700">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@color/white"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NEW BADGE!"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#FBC02D"
+            android:fontFamily="sans-serif-black"
+            android:layout_marginBottom="24dp"/>
+
+        <ImageView
+            android:id="@+id/imgEarnedBadge"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_yes"
+            app:tint="#FBC02D"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:id="@+id/txtEarnedBadgeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Routine Name"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:gravity="center"
+            android:fontFamily="sans-serif-black"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Added to your collection! 💜"
+            android:textSize="14sp"
+            android:textColor="#9E9E9E"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

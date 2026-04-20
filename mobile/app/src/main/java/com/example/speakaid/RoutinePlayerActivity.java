@@ -1,15 +1,22 @@
 package com.example.speakaid;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -39,6 +46,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
     int currentStep = 0;
     List<String> steps;
     int routineId;
+    String routineTitle;
 
     SharedPreferences prefs;
     KonfettiView konfettiView;
@@ -78,6 +86,9 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                 steps.add(cursor.getString(2));
             }
         }
+        
+        // Get routine title for the badge
+        routineTitle = getRoutineTitle(routineId);
 
         if (currentStep >= steps.size()) {
             currentStep = 0;
@@ -106,7 +117,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         btnPrevFrame.setOnClickListener(v -> {
             if (isCompleted) {
                 isCompleted = false;
-                btnNextText.setText(getString(R.string.next));//btnNextText.setText("NEXT");
+                btnNextText.setText(getString(R.string.next));
                 showStep();
             } else if (currentStep > 0) {
                 currentStep--;
@@ -123,6 +134,19 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                 showStep();
             }
         });
+    }
+
+    private String getRoutineTitle(int id) {
+        Cursor cursor = db.getRoutines();
+        String title = "Routine";
+        while (cursor.moveToNext()) {
+            if (cursor.getInt(0) == id) {
+                title = cursor.getString(1);
+                break;
+            }
+        }
+        cursor.close();
+        return title;
     }
 
     private void saveProgress() {
@@ -164,8 +188,8 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         db.markRoutineCompleted(routineId, today);
 
-        txtStep.setText(getString(R.string.routine_complete));//txtStep.setText("AMAZING JOB!");
-        btnNextText.setText(getString(R.string.finish));//btnNextText.setText("FINISH");
+        txtStep.setText(getString(R.string.routine_complete));
+        btnNextText.setText(getString(R.string.finish));
         progressIndicator.setProgress(100);
         
         if (konfettiView != null) {
@@ -177,6 +201,32 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                     .colors(Arrays.asList(0xFF58CC02, 0xFF1CB0F6, 0xFFFFC800))
                     .build());
         }
+
+        // SHOW ROTATING BADGE POPUP
+        showBadgeEarnedPopup(routineTitle);
+    }
+
+    private void showBadgeEarnedPopup(String badgeName) {
+        View popupView = LayoutInflater.from(this).inflate(R.layout.dialog_badge_earned, null);
+        TextView txtName = popupView.findViewById(R.id.txtEarnedBadgeName);
+        View card = popupView.findViewById(R.id.earnedBadgeCard);
+        
+        txtName.setText(badgeName);
+
+        AlertDialog dialog = new AlertDialog.Builder(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen)
+                .setView(popupView)
+                .create();
+
+        dialog.show();
+
+        // 3D Rotation Animation (Duolingo Style)
+        card.setCameraDistance(8000 * getResources().getDisplayMetrics().density);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(card, View.ROTATION_Y, 0f, 360f);
+        animator.setDuration(1200);
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.start();
+
+        popupView.setOnClickListener(v -> dialog.dismiss());
     }
 
     private void startTransition(int nextIndex, String nextStep) {
@@ -184,7 +234,6 @@ public class RoutinePlayerActivity extends AppCompatActivity {
             for (int i = 3; i >= 1; i--) {
                 int finalI = i;
                 runOnUiThread(() -> txtTransition.setText(getString(R.string.get_ready, finalI)));
-                // runOnUiThread(() -> txtTransition.setText("Get ready... " + finalI));//old code
                 try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
             }
             runOnUiThread(() -> {

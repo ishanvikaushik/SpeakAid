@@ -39,7 +39,6 @@ public class HelpActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private HuggingFaceService hfService;
 
-    // Securely loaded from BuildConfig
     private static final String HF_TOKEN = "Bearer " + BuildConfig.HF_API_TOKEN;
 
     @Override
@@ -56,7 +55,6 @@ public class HelpActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
-        // Initialize Retrofit for Hugging Face
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api-inference.huggingface.co/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -112,7 +110,7 @@ public class HelpActivity extends AppCompatActivity {
                     checkEmotions(results);
                 } else {
                     Log.e("HF_ERROR", "Error Code: " + response.code());
-                    offlineCheck(text); // Fallback to offline on API error
+                    offlineCheck(text);
                 }
             }
 
@@ -120,7 +118,6 @@ public class HelpActivity extends AppCompatActivity {
             public void onFailure(Call<List<List<HuggingFaceService.Response>>> call, Throwable t) {
                 btnSubmit.setEnabled(true);
                 btnSubmit.setText("TALK TO ME");
-                Log.e("HF_ERROR", "Failure: " + t.getMessage());
                 offlineCheck(text);
             }
         });
@@ -129,7 +126,6 @@ public class HelpActivity extends AppCompatActivity {
     private void checkEmotions(List<HuggingFaceService.Response> results) {
         boolean distressDetected = false;
         for (HuggingFaceService.Response res : results) {
-            // Check for fear, anger, or sadness with high confidence
             if ((res.label.equalsIgnoreCase("fear") || res.label.equalsIgnoreCase("anger") || res.label.equalsIgnoreCase("sadness")) && res.score > 0.6) {
                 distressDetected = true;
                 break;
@@ -168,12 +164,10 @@ public class HelpActivity extends AppCompatActivity {
         String phone = prefs.getString("emergency_phone", "");
         if (!phone.isEmpty()) {
             sendSms(phone, "SpeakAid Alert: High distress detected. Please check on the user.");
-        } else {
-            Toast.makeText(this, "No caregiver number saved in Settings!", Toast.LENGTH_SHORT).show();
         }
 
-        // Switch to grounding mode immediately
-        Intent intent = new Intent(this, ZenCanvasActivity.class);
+        // IMPROVED: Automatically start Grounding Mode (Breathing Exercise)
+        Intent intent = new Intent(this, GroundingActivity.class);
         startActivity(intent);
         finish();
     }
@@ -189,13 +183,9 @@ public class HelpActivity extends AppCompatActivity {
                 } else {
                     smsManager = SmsManager.getDefault();
                 }
-                
                 smsManager.sendTextMessage(phone, null, message, null, null);
-                Log.d("SMS", "Triggered send to " + phone);
-                Toast.makeText(this, "Alert SMS sent to " + phone, Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Log.e("SMS_ERROR", "Failed: " + e.getMessage());
-                Toast.makeText(this, "Standard SMS failed. This is normal on emulators.", Toast.LENGTH_LONG).show();
             }
         }
     }

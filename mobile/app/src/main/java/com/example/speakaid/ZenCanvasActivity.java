@@ -3,12 +3,14 @@ package com.example.speakaid;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ZenCanvasActivity extends AppCompatActivity {
 
     private ScratchView scratchView;
     private Button btnReset;
+    private ImageButton btnBack;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -17,22 +19,13 @@ public class ZenCanvasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sensory_play);
+        setContentView(R.layout.activity_zen_canvas);
 
         scratchView = findViewById(R.id.scratchView);
         btnReset = findViewById(R.id.btnReset);
+        btnBack = findViewById(R.id.btnBack);
 
         btnReset.setOnClickListener(v -> scratchView.reset());
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Zen Canvas");
-        }
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
+        btnBack.setOnClickListener(v -> finish());
     }
 }

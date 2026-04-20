@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E8F5E9"
+    android:padding="24dp">
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_no"
+        android:rotation="180"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:contentDescription="Exit" />
+
+    <TextView
+        android:id="@+id/txtInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnBack"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="Breathe with me..."
+        android:textSize="24sp"
+        android:textColor="#2E7D32"
+        android:fontFamily="sans-serif-medium" />
+
+    <!-- Breathing Circle -->
+    <View
+        android:id="@+id/breathingCircle"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bubble_drawable"
+        android:backgroundTint="#81C784"
+        android:alpha="0.6" />
+
+    <TextView
+        android:id="@+id/txtBreatheState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="INHALE"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnSoundToggle"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/duo_card_white"
+            android:src="@android:drawable/ic_lock_silent_mode_off"
+            android:layout_marginEnd="24dp"
+            android:padding="12dp"
+            android:scaleType="centerInside" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap to Toggle Rain Sound"
+            android:textColor="#666666" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <!-- 1. FULL PAGE BACKGROUND IMAGE -->
+    <ImageView
+        android:id="@+id/imgDashboardBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 2. DARK/LIGHT OVERLAY FOR READABILITY -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#15000000" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="60dp">
+
+            <!-- 3. QUOTE CLOUD (GLASS EFFECT) -->
+            <LinearLayout
+                android:id="@+id/quoteContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="50dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="40dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="#D9FFFFFF"
+                    app:strokeColor="#FFFFFF"
+                    app:strokeWidth="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="28dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="“"
+                            android:textSize="48sp"
+                            android:textColor="#9575CD"
+                            android:fontFamily="serif"
+                            android:layout_marginBottom="-25dp" />
+
+                        <TextView
+                            android:id="@+id/txtQuote"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="&quot;Every progress, no\nmatter how small, is a\nvictory.&quot;"
+                            android:textSize="18sp"
+                            android:textColor="#455A64"
+                            android:gravity="center"
+                            android:lineSpacingExtra="4dp"
+                            android:fontFamily="sans-serif-medium" />
+                        
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_yes"
+                            app:tint="#D1C4E9"
+                            android:layout_marginTop="12dp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Cloud Tail -->
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/speech_bubble_tail"
+                    app:tint="#D9FFFFFF"
+                    android:layout_marginTop="-2dp"
+                    android:layout_marginStart="80dp"/>
+            </LinearLayout>
+
+            <!-- 4. SEPARATE PANDA MASCOT -->
+            <ImageView
+                android:id="@+id/imgMascot"
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:src="@drawable/panda"
+                app:layout_constraintTop_toBottomOf="@id/quoteContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp" />
+
+            <!-- 5. APP TITLE -->
+            <TextView
+                android:id="@+id/appTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SpeakAid"
+                android:textSize="48sp"
+                android:textColor="#2C3E50"
+                android:fontFamily="sans-serif-black"
+                app:layout_constraintTop_toBottomOf="@id/imgMascot"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <View
+                android:id="@+id/titleUnderline"
+                android:layout_width="60dp"
+                android:layout_height="6dp"
+                android:background="#D1C4E9"
+                app:layout_constraintTop_toBottomOf="@id/appTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="4dp" />
+
+            <!-- 6. ACTION BUTTONS (NO OVERLAP) -->
+            <LinearLayout
+                android:id="@+id/buttonContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/titleUnderline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="48dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnUser"
+                    android:layout_width="280dp"
+                    android:layout_height="76dp"
+                    android:text="USER MODE"
+                    android:textSize="18sp"
+                    app:cornerRadius="38dp"
+                    android:fontFamily="sans-serif-black"
+                    app:icon="@drawable/ic_happy"
+                    app:iconGravity="textStart"
+                    app:iconPadding="16dp"
+                    app:iconSize="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:elevation="6dp"
+                    app:backgroundTint="#B39DDB" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCaregiver"
+                    android:layout_width="280dp"
+                    android:layout_height="76dp"
+                    android:text="CAREGIVER MODE"
+                    android:textSize="18sp"
+                    app:cornerRadius="38dp"
+                    android:fontFamily="sans-serif-black"
+                    app:icon="@drawable/ic_settings"
+                    app:iconGravity="textStart"
+                    app:iconPadding="16dp"
+                    app:iconSize="32dp"
+                    android:elevation="6dp"
+                    app:backgroundTint="#4FC3F7" />
+
+            </LinearLayout>
+
+            <!-- 7. FOOTER (GLASS EFFECT) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/footerCard"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#B3FFFFFF"
+                app:strokeColor="#FFFFFF"
+                app:strokeWidth="1.5dp"
+                app:layout_constraintTop_toBottomOf="@id/buttonContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="60dp">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="18dp"
+                    android:gravity="center">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_happy"
+                        app:tint="#81C784"
+                        android:layout_marginEnd="12dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="I'm here for you 💜"
+                        android:textColor="#546E7A"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif-medium" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
