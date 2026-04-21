@@ -13,8 +13,8 @@ import com.google.android.material.card.MaterialCardView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private View btnRoutines, btnScripts, btnCommunicate, btnSensory, btnHelp;
-    private ImageButton btnBack, btnSettings;
+    private View btnRoutines, btnScripts, btnCommunicate, btnSensory, btnHelp, btnSettings;
+    private ImageButton btnBack;
     private MaterialCardView btnViewBadges;
     private TextView txtStreak, txtBadges;
     private SharedPreferences prefs;
@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         btnCommunicate.setOnClickListener(v -> startActivity(new Intent(this, CommunicateActivity.class)));
         btnSensory.setOnClickListener(v -> startActivity(new Intent(this, SensoryPlayActivity.class)));
         btnHelp.setOnClickListener(v -> startActivity(new Intent(this, HelpActivity.class)));
+        
+        // This is now a LinearLayout acting as a button
         btnSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
         
         btnViewBadges.setOnClickListener(v -> startActivity(new Intent(this, BadgeGalleryActivity.class)));
@@ -63,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         int streak = db.getStreak();
         txtStreak.setText(streak + " Day Streak!");
         
-        // Count total badges (Daily Stars)
         int starCount = db.getTotalStars();
         txtBadges.setText("⭐ " + starCount);
     }
@@ -73,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         updateStats();
         
-        // Theme check
         String savedTheme = prefs.getString("theme", "classic");
         if (!savedTheme.equals(currentTheme)) {
             recreate();
