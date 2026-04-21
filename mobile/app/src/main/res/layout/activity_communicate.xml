@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif-black"
-        android:text="COMMUNICATE "
+        android:text="COMMUNICATE 💜"
         android:textColor="#4A148C"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +61,6 @@
             android:columnOrderPreserved="false"
             android:padding="12dp">
 
-            <!-- Default Cards (Pre-filled) -->
             <!-- Food -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardFood"

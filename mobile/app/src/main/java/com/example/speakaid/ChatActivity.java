@@ -1,5 +1,6 @@
 package com.example.speakaid;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,8 +37,9 @@ public class ChatActivity extends AppCompatActivity {
     private Socket mSocket;
     private String roomId;
     private String userRole;
+    private DBHelper db;
 
-    // Replace with your actual Render URL
+    // TODO: Update this with your actual Render URL
     private static final String SERVER_URL = "https://speakaid.onrender.com";
 
     @Override
@@ -46,6 +48,7 @@ public class ChatActivity extends AppCompatActivity {
         ThemeHelper.applyTheme(this);
         setContentView(R.layout.activity_chat);
 
+        db = new DBHelper(this);
         roomId = getIntent().getStringExtra("roomId");
         userRole = getIntent().getStringExtra("userRole");
         
@@ -53,6 +56,7 @@ public class ChatActivity extends AppCompatActivity {
         if (userRole == null) userRole = "User";
 
         initViews();
+        loadHistory();
         setupSocket();
     }
 
@@ -64,7 +68,7 @@ public class ChatActivity extends AppCompatActivity {
         txtRoomName = findViewById(R.id.txtRoomName);
         viewConnectionStatus = findViewById(R.id.viewConnectionStatus);
 
-        txtRoomName.setText("Chat: " + roomId);
+        txtRoomName.setText("Room: " + roomId);
         btnBack.setOnClickListener(v -> finish());
 
         messages = new ArrayList<>();
@@ -73,14 +77,27 @@ public class ChatActivity extends AppCompatActivity {
         recyclerMessages.setAdapter(adapter);
 
         btnSend.setOnClickListener(v -> sendMessage());
-        
-        // Initial state: connecting
-        Toast.makeText(this, "Connecting to server...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void loadHistory() {
+        try (Cursor cursor = db.getChatHistory(roomId)) {
+            while (cursor.moveToNext()) {
+                String text = cursor.getString(2);
+                String sender = cursor.getString(3);
+                boolean isSent = cursor.getInt(4) == 1;
+                messages.add(new Message(text, isSent, sender));
+            }
+            adapter.notifyDataSetChanged();
+            if (messages.size() > 0) recyclerMessages.scrollToPosition(messages.size() - 1);
+        }
     }
 
     private void setupSocket() {
         try {
-            mSocket = IO.socket(SERVER_URL);
+            IO.Options options = new IO.Options();
+            options.transports = new String[]{"websocket", "polling"}; 
+            options.forceNew = true;
+            mSocket = IO.socket(SERVER_URL, options);
         } catch (URISyntaxException e) {
             Log.e("ChatActivity", "Socket URL error", e);
             return;
@@ -89,17 +106,15 @@ public class ChatActivity extends AppCompatActivity {
         mSocket.on(Socket.EVENT_CONNECT, args -> runOnUiThread(() -> {
             viewConnectionStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFF4CAF50)); // Green
             mSocket.emit("joinRoom", roomId);
-            Toast.makeText(this, "Connected!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Connected as " + userRole, Toast.LENGTH_SHORT).show();
+        }));
+
+        mSocket.on(Socket.EVENT_CONNECT_ERROR, args -> runOnUiThread(() -> {
+            viewConnectionStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFFFFC107)); // Yellow
         }));
 
         mSocket.on(Socket.EVENT_DISCONNECT, args -> runOnUiThread(() -> {
             viewConnectionStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFFFF5252)); // Red
-        }));
-
-        mSocket.on(Socket.EVENT_CONNECT_ERROR, args -> runOnUiThread(() -> {
-            Log.e("ChatActivity", "Connection Error: " + args[0]);
-            // Often happens if Render is sleeping
-            viewConnectionStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFFFFC107)); // Yellow
         }));
 
         mSocket.on("receiveMessage", onNewMessage);
@@ -112,6 +127,10 @@ public class ChatActivity extends AppCompatActivity {
         try {
             String text = data.getString("text");
             String sender = data.optString("senderName", "Other");
+            
+            // Save to DB
+            db.saveChatMessage(roomId, text, sender, false);
+            
             addMessage(text, false, sender);
         } catch (JSONException e) {
             Log.e("ChatActivity", "JSON Parse error", e);
@@ -130,13 +149,16 @@ public class ChatActivity extends AppCompatActivity {
                 data.put("senderName", userRole);
                 mSocket.emit("chatMessage", data);
                 
+                // Save to DB
+                db.saveChatMessage(roomId, text, userRole, true);
+                
                 addMessage(text, true, "Me");
                 editMessage.setText("");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         } else {
-            Toast.makeText(this, "Still connecting... please wait", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Still connecting...", Toast.LENGTH_SHORT).show();
         }
     }
 

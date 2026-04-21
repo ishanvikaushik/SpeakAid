@@ -14,7 +14,7 @@ import java.util.Locale;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "speakaid.db";
-    private static final int DB_VERSION = 6;
+    private static final int DB_VERSION = 7; // Incremented for ChatHistory
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -29,6 +29,15 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE CustomPhrase (id INTEGER PRIMARY KEY AUTOINCREMENT, phrase TEXT, iconName TEXT)");
         db.execSQL("CREATE TABLE DailyBadges (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT UNIQUE, badgeType TEXT)");
         db.execSQL("CREATE TABLE Badges (id INTEGER PRIMARY KEY AUTOINCREMENT, routineTitle TEXT UNIQUE, count INTEGER DEFAULT 0)");
+        
+        // Chat History Table
+        db.execSQL("CREATE TABLE ChatHistory (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "roomId TEXT, " +
+                "message TEXT, " +
+                "senderName TEXT, " +
+                "isSent INTEGER, " +
+                "timestamp LONG)");
     }
 
     @Override
@@ -36,8 +45,35 @@ public class DBHelper extends SQLiteOpenHelper {
         if (oldVersion < 4) db.execSQL("CREATE TABLE IF NOT EXISTS CustomPhrase (id INTEGER PRIMARY KEY AUTOINCREMENT, phrase TEXT, iconName TEXT)");
         if (oldVersion < 5) db.execSQL("CREATE TABLE IF NOT EXISTS DailyBadges (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT UNIQUE, badgeType TEXT)");
         if (oldVersion < 6) db.execSQL("CREATE TABLE IF NOT EXISTS Badges (id INTEGER PRIMARY KEY AUTOINCREMENT, routineTitle TEXT UNIQUE, count INTEGER DEFAULT 0)");
+        if (oldVersion < 7) {
+            db.execSQL("CREATE TABLE IF NOT EXISTS ChatHistory (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "roomId TEXT, " +
+                    "message TEXT, " +
+                    "senderName TEXT, " +
+                    "isSent INTEGER, " +
+                    "timestamp LONG)");
+        }
     }
 
+    // --- Chat Methods ---
+    public void saveChatMessage(String roomId, String message, String senderName, boolean isSent) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("roomId", roomId);
+        values.put("message", message);
+        values.put("senderName", senderName);
+        values.put("isSent", isSent ? 1 : 0);
+        values.put("timestamp", System.currentTimeMillis());
+        db.insert("ChatHistory", null, values);
+    }
+
+    public Cursor getChatHistory(String roomId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM ChatHistory WHERE roomId = ? ORDER BY timestamp ASC", new String[]{roomId});
+    }
+
+    // --- Routine Methods ---
     public long insertRoutine(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
