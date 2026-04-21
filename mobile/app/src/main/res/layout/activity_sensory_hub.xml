@@ -126,7 +126,7 @@
                         android:layout_height="100dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/panda" />
+                        android:src="@drawable/breathe" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -185,8 +185,7 @@
                         android:layout_height="100dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_scripts"
-                        app:tint="#1976D2" />
+                        android:src="@drawable/canvas" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 

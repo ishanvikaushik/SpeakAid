@@ -34,8 +34,8 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:src="@drawable/panda" />
 
             <LinearLayout
@@ -49,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Good Morning! 🌟"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textColor="#333333"
                     android:fontFamily="sans-serif-black" />
 
@@ -57,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Make today peaceful."
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textColor="#757575"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
@@ -76,8 +76,8 @@
             android:padding="8dp"
             android:background="?attr/selectableItemBackgroundBorderless">
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:src="@drawable/ic_settings"
                 app:tint="#4A148C" />
             <TextView
@@ -126,11 +126,13 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
 
+                        <!-- INCREASED SIZE FOR AWAKE/BLINK -->
                         <ImageView
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:src="@drawable/ic_happy"
-                            app:tint="#FBC02D" />
+                            android:id="@+id/imgStatusMascot"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/awake"
+                            android:scaleType="centerInside" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -202,10 +204,11 @@
                 android:alignmentMode="alignMargins"
                 android:columnOrderPreserved="false">
 
+                <!-- INCREASED CARD SIZES AND IMAGE SIZES -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnRoutines"
                     android:layout_width="0dp"
-                    android:layout_height="180dp"
+                    android:layout_height="220dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
                     app:cardCornerRadius="32dp"
@@ -219,40 +222,26 @@
                         android:orientation="vertical"
                         android:padding="12dp">
                         <ImageView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_routines"
-                            app:tint="#1976D2" />
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:src="@drawable/routine"
+                            android:scaleType="centerInside" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="ROUTINES"
                             android:textColor="#1565C0"
-                            android:textSize="16sp"
+                            android:textSize="17sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-black"
                             android:layout_marginTop="8dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Daily plans"
-                            android:textSize="11sp"
-                            android:textColor="#1E88E5"/>
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_yes"
-                            app:tint="#1976D2"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/bubble_drawable"
-                            app:backgroundTint="#FFFFFF"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnScripts"
                     android:layout_width="0dp"
-                    android:layout_height="180dp"
+                    android:layout_height="220dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
                     app:cardCornerRadius="32dp"
@@ -266,40 +255,26 @@
                         android:orientation="vertical"
                         android:padding="12dp">
                         <ImageView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_scripts"
-                            app:tint="#388E3C" />
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:src="@drawable/script"
+                            android:scaleType="centerInside" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="SCRIPTS"
                             android:textColor="#2E7D32"
-                            android:textSize="16sp"
+                            android:textSize="17sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-black"
                             android:layout_marginTop="8dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Helpful guides"
-                            android:textSize="11sp"
-                            android:textColor="#43A047"/>
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_yes"
-                            app:tint="#388E3C"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/bubble_drawable"
-                            app:backgroundTint="#FFFFFF"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnCommunicate"
                     android:layout_width="0dp"
-                    android:layout_height="180dp"
+                    android:layout_height="220dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
                     app:cardCornerRadius="32dp"
@@ -313,40 +288,26 @@
                         android:orientation="vertical"
                         android:padding="12dp">
                         <ImageView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_chat"
-                            app:tint="#7B1FA2" />
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:src="@drawable/speak"
+                            android:scaleType="centerInside" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="SPEAK"
                             android:textColor="#6A1B9A"
-                            android:textSize="16sp"
+                            android:textSize="17sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-black"
                             android:layout_marginTop="8dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Let's talk"
-                            android:textSize="11sp"
-                            android:textColor="#8E24AA"/>
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_yes"
-                            app:tint="#7B1FA2"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/bubble_drawable"
-                            app:backgroundTint="#FFFFFF"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnSensory"
                     android:layout_width="0dp"
-                    android:layout_height="180dp"
+                    android:layout_height="220dp"
                     android:layout_columnWeight="1"
                     android:layout_margin="8dp"
                     app:cardCornerRadius="32dp"
@@ -360,33 +321,19 @@
                         android:orientation="vertical"
                         android:padding="12dp">
                         <ImageView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:src="@drawable/ic_happy"
-                            app:tint="#F57C00" />
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:src="@drawable/play"
+                            android:scaleType="centerInside" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ZEN"
+                            android:text="PLAY"
                             android:textColor="#E65100"
-                            android:textSize="16sp"
+                            android:textSize="17sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-black"
                             android:layout_marginTop="8dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Find your calm"
-                            android:textSize="11sp"
-                            android:textColor="#FB8C00"/>
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_yes"
-                            app:tint="#F57C00"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/bubble_drawable"
-                            app:backgroundTint="#FFFFFF"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

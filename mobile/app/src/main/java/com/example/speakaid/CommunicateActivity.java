@@ -31,11 +31,12 @@ public class CommunicateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeHelper.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_communicate);
 
         db = new DBHelper(this);
-        gridLayout = findViewById(R.id.gridLayoutCommunicate); // Add this ID to XML
+        gridLayout = findViewById(R.id.gridLayoutCommunicate); 
 
         // Initialize TTS
         tts = new TextToSpeech(this, status -> {
@@ -80,7 +81,6 @@ public class CommunicateActivity extends AppCompatActivity {
 
         txt.setText(phrase);
         
-        // Dynamic icon loading
         int resId = getResources().getIdentifier(iconName, "drawable", getPackageName());
         if (resId != 0) img.setImageResource(resId);
 
@@ -88,10 +88,10 @@ public class CommunicateActivity extends AppCompatActivity {
 
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = 0;
-        params.height = 0;
+        params.height = GridLayout.LayoutParams.WRAP_CONTENT;
         params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
         params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-        params.setMargins(8, 8, 8, 8);
+        params.setMargins(20, 20, 20, 20);
         
         cardView.setLayoutParams(params);
         gridLayout.addView(cardView);

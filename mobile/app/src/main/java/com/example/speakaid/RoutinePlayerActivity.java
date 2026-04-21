@@ -1,7 +1,5 @@
 package com.example.speakaid;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,7 +8,6 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -87,7 +84,6 @@ public class RoutinePlayerActivity extends AppCompatActivity {
             }
         }
         
-        // Get routine title for the badge
         routineTitle = getRoutineTitle(routineId);
 
         if (currentStep >= steps.size()) {
@@ -202,16 +198,29 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                     .build());
         }
 
-        // SHOW ROTATING BADGE POPUP
         showBadgeEarnedPopup(routineTitle);
     }
 
     private void showBadgeEarnedPopup(String badgeName) {
         View popupView = LayoutInflater.from(this).inflate(R.layout.dialog_badge_earned, null);
         TextView txtName = popupView.findViewById(R.id.txtEarnedBadgeName);
+        ImageView imgBadge = popupView.findViewById(R.id.imgEarnedBadge);
         View card = popupView.findViewById(R.id.earnedBadgeCard);
         
         txtName.setText(badgeName);
+
+        // MAP IMAGES TO POPUP
+        int badgeRes = R.drawable.ic_yes; // Default
+        String lowerName = badgeName.toLowerCase();
+
+        if (lowerName.contains("morning")) badgeRes = R.drawable.morning;
+        else if (lowerName.contains("night")) badgeRes = R.drawable.night;
+        else if (lowerName.contains("school")) badgeRes = R.drawable.school;
+        else if (lowerName.contains("laundry")) badgeRes = R.drawable.laundry;
+        else badgeRes = R.drawable.custom;
+
+        imgBadge.setImageResource(badgeRes);
+        imgBadge.setColorFilter(null); // Ensure no gray tint in the win popup
 
         AlertDialog dialog = new AlertDialog.Builder(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen)
                 .setView(popupView)
@@ -219,7 +228,6 @@ public class RoutinePlayerActivity extends AppCompatActivity {
 
         dialog.show();
 
-        // 3D Rotation Animation (Duolingo Style)
         card.setCameraDistance(8000 * getResources().getDisplayMetrics().density);
         ObjectAnimator animator = ObjectAnimator.ofFloat(card, View.ROTATION_Y, 0f, 360f);
         animator.setDuration(1200);
@@ -247,10 +255,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
-        }
+        if (tts != null) { tts.stop(); tts.shutdown(); }
         super.onDestroy();
     }
 }

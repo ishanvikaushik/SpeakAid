@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 2. DARK/LIGHT OVERLAY FOR READABILITY -->
+    <!-- 2. LIGHT OVERLAY -->
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,83 +34,46 @@
             android:layout_height="wrap_content"
             android:paddingBottom="60dp">
 
-            <!-- 3. QUOTE CLOUD (GLASS EFFECT) -->
-            <LinearLayout
+            <!-- 3. CLOUD QUOTE BUBBLE -->
+            <RelativeLayout
                 android:id="@+id/quoteContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="50dp">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="40dp"
-                    app:cardElevation="8dp"
-                    app:cardBackgroundColor="#D9FFFFFF"
-                    app:strokeColor="#FFFFFF"
-                    app:strokeWidth="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="28dp"
-                        android:gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="“"
-                            android:textSize="48sp"
-                            android:textColor="#9575CD"
-                            android:fontFamily="serif"
-                            android:layout_marginBottom="-25dp" />
-
-                        <TextView
-                            android:id="@+id/txtQuote"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="&quot;Every progress, no\nmatter how small, is a\nvictory.&quot;"
-                            android:textSize="18sp"
-                            android:textColor="#455A64"
-                            android:gravity="center"
-                            android:lineSpacingExtra="4dp"
-                            android:fontFamily="sans-serif-medium" />
-                        
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_yes"
-                            app:tint="#D1C4E9"
-                            android:layout_marginTop="12dp"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Cloud Tail -->
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/speech_bubble_tail"
-                    app:tint="#D9FFFFFF"
-                    android:layout_marginTop="-2dp"
-                    android:layout_marginStart="80dp"/>
-            </LinearLayout>
+                    android:id="@+id/imgCloud"
+                    android:layout_width="320dp"
+                    android:layout_height="180dp"
+                    android:src="@drawable/cloud"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/txtQuote"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="&quot;Every progress, no matter how small, is a victory.&quot;"
+                    android:textSize="18sp"
+                    android:textColor="#455A64"
+                    android:gravity="center"
+                    android:paddingBottom="20dp"
+                    android:fontFamily="sans-serif-medium" />
+            </RelativeLayout>
 
             <!-- 4. SEPARATE PANDA MASCOT -->
             <ImageView
                 android:id="@+id/imgMascot"
-                android:layout_width="240dp"
-                android:layout_height="240dp"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
                 android:src="@drawable/panda"
                 app:layout_constraintTop_toBottomOf="@id/quoteContainer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="-20dp" />
 
             <!-- 5. APP TITLE -->
             <TextView
@@ -124,42 +87,28 @@
                 app:layout_constraintTop_toBottomOf="@id/imgMascot"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="8dp" />
 
-            <View
-                android:id="@+id/titleUnderline"
-                android:layout_width="60dp"
-                android:layout_height="6dp"
-                android:background="#D1C4E9"
-                app:layout_constraintTop_toBottomOf="@id/appTitle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="4dp" />
-
-            <!-- 6. ACTION BUTTONS (NO OVERLAP) -->
+            <!-- 6. ACTION BUTTONS -->
             <LinearLayout
                 android:id="@+id/buttonContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/titleUnderline"
+                app:layout_constraintTop_toBottomOf="@id/appTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="48dp">
+                android:layout_marginTop="40dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnUser"
                     android:layout_width="280dp"
-                    android:layout_height="76dp"
+                    android:layout_height="72dp"
                     android:text="USER MODE"
                     android:textSize="18sp"
-                    app:cornerRadius="38dp"
+                    app:cornerRadius="36dp"
                     android:fontFamily="sans-serif-black"
-                    app:icon="@drawable/ic_happy"
-                    app:iconGravity="textStart"
-                    app:iconPadding="16dp"
-                    app:iconSize="32dp"
                     android:layout_marginBottom="16dp"
                     android:elevation="6dp"
                     app:backgroundTint="#B39DDB" />
@@ -167,15 +116,11 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCaregiver"
                     android:layout_width="280dp"
-                    android:layout_height="76dp"
+                    android:layout_height="72dp"
                     android:text="CAREGIVER MODE"
                     android:textSize="18sp"
-                    app:cornerRadius="38dp"
+                    app:cornerRadius="36dp"
                     android:fontFamily="sans-serif-black"
-                    app:icon="@drawable/ic_settings"
-                    app:iconGravity="textStart"
-                    app:iconPadding="16dp"
-                    app:iconSize="32dp"
                     android:elevation="6dp"
                     app:backgroundTint="#4FC3F7" />
 
@@ -202,12 +147,6 @@
                     android:orientation="horizontal"
                     android:padding="18dp"
                     android:gravity="center">
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_happy"
-                        app:tint="#81C784"
-                        android:layout_marginEnd="12dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

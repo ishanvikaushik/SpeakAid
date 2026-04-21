@@ -61,6 +61,7 @@
             android:columnOrderPreserved="false"
             android:padding="12dp">
 
+            <!-- Default Cards (Pre-filled) -->
             <!-- Food -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardFood"

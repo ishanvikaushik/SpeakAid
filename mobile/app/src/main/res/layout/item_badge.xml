@@ -20,7 +20,7 @@
             android:id="@+id/imgBadge"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/ic_yes"
+            android:src="@drawable/morning"
             android:scaleType="centerInside" />
 
         <TextView

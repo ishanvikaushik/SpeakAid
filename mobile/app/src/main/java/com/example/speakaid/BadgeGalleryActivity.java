@@ -1,6 +1,8 @@
 package com.example.speakaid;
 
 import android.database.Cursor;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,36 +38,61 @@ public class BadgeGalleryActivity extends AppCompatActivity {
     }
 
     private void loadBadges() {
-        // 1. Get earned badge counts
+        // 1. Get earned badge counts from DB
         Map<String, Integer> earnedBadges = new HashMap<>();
         try (Cursor cursor = db.getAllBadges()) {
             while (cursor.moveToNext()) {
-                earnedBadges.put(cursor.getString(1), cursor.getInt(2));
+                earnedBadges.put(cursor.getString(1).toLowerCase(), cursor.getInt(2));
             }
         }
 
-        int earnedCount = 0;
-        int lockedCount = 0;
+        String[] fixedKeywords = {"morning", "night", "school", "laundry"};
+        String[] displayTitles = {"Morning Routine", "Night Routine", "School Routine", "Laundry Routine"};
+        int[] fixedIcons = {R.drawable.morning, R.drawable.night, R.drawable.school, R.drawable.laundry};
 
-        // 2. Get all possible routines (available badges)
-        try (Cursor cursor = db.getRoutines()) {
-            while (cursor.moveToNext()) {
-                String routineTitle = cursor.getString(1);
-                int count = earnedBadges.getOrDefault(routineTitle, 0);
-                
-                if (count > 0) earnedCount++;
-                else lockedCount++;
+        int earnedCountTotal = 0;
+        badgeGrid.removeAllViews();
 
-                addBadgeToGrid(routineTitle, count);
+        // 2. Add fixed badges with flexible matching
+        for (int i = 0; i < fixedKeywords.length; i++) {
+            String keyword = fixedKeywords[i];
+            int count = 0;
+            
+            // Check if any earned routine title contains the keyword
+            for (Map.Entry<String, Integer> entry : earnedBadges.entrySet()) {
+                if (entry.getKey().contains(keyword)) {
+                    count += entry.getValue();
+                }
             }
+
+            if (count > 0) earnedCountTotal++;
+            addBadgeToGrid(displayTitles[i], count, fixedIcons[i]);
         }
 
-        // Update stats card
-        txtEarnedCount.setText(String.valueOf(earnedCount));
-        txtLockedCount.setText(String.valueOf(lockedCount));
+        // 3. Handle Custom Routine Badge
+        int customCount = 0;
+        for (Map.Entry<String, Integer> entry : earnedBadges.entrySet()) {
+            boolean isFixed = false;
+            for (String kw : fixedKeywords) {
+                if (entry.getKey().contains(kw)) {
+                    isFixed = true;
+                    break;
+                }
+            }
+            if (!isFixed) {
+                customCount += entry.getValue();
+            }
+        }
+        
+        if (customCount > 0) earnedCountTotal++;
+        addBadgeToGrid("Custom Routine", customCount, R.drawable.custom);
+
+        // Update stats
+        txtEarnedCount.setText(String.valueOf(earnedCountTotal));
+        txtLockedCount.setText(String.valueOf(5 - earnedCountTotal));
     }
 
-    private void addBadgeToGrid(String name, int count) {
+    private void addBadgeToGrid(String name, int count, int iconRes) {
         View view = LayoutInflater.from(this).inflate(R.layout.item_badge, null);
         
         ImageView img = view.findViewById(R.id.imgBadge);
@@ -73,29 +100,25 @@ public class BadgeGalleryActivity extends AppCompatActivity {
         TextView txtCount = view.findViewById(R.id.txtBadgeCount);
 
         txtName.setText(name);
-
-        // Assigning specific images based on routine name
-        int badgeIcon = R.drawable.ic_yes; // Default
-        String lowerName = name.toLowerCase();
-
-        if (lowerName.contains("morning")) badgeIcon = R.drawable.ic_happy;
-        else if (lowerName.contains("school")) badgeIcon = R.drawable.ic_scripts;
-        else if (lowerName.contains("night")) badgeIcon = R.drawable.ic_toilet;
-        else if (lowerName.contains("brush")) badgeIcon = R.drawable.ic_water;
-        
-        img.setImageResource(badgeIcon);
+        img.setImageResource(iconRes);
 
         if (count > 0) {
-            // Unlocked state
-            img.setColorFilter(null);
+            // Unlocked: Full color
+            img.clearColorFilter();
             img.setAlpha(1.0f);
             txtCount.setText("Earned x" + count);
-            txtCount.setTextColor(0xFFF57F17); // Orange
+            txtCount.setTextColor(0xFFF57F17);
             txtName.setTextColor(0xFF333333);
         } else {
-            // Locked state (Grayed out)
-            img.setAlpha(0.15f);
-            img.setColorFilter(0xFFAAAAAA, android.graphics.PorterDuff.Mode.SRC_ATOP);
+            // Locked: Grayscale and faint
+            img.setAlpha(0.3f);
+            
+            // Apply a grayscale filter instead of a solid tint
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0); 
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            img.setColorFilter(filter);
+            
             txtCount.setText("Locked");
             txtCount.setTextColor(0xFFBDBDBD);
         }
