@@ -141,7 +141,7 @@ public class HelpActivity extends AppCompatActivity {
 
     private void offlineCheck(String text) {
         String lowerText = text.toLowerCase();
-        String[] keywords = {"scared", "angry", "help", "stop", "overwhelmed", "hate", "hurt", "kill", "die", "sad"};
+        String[] keywords = {"scared", "angry", "help", "stop", "overwhelmed", "hate", "hurt", "kill", "die", "sad", "depressed", "frightened", "not okay", "not happy"};
         
         boolean detected = false;
         for (String word : keywords) {

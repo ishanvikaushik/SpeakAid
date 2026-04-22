@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="colorPrimaryShadow" format="color" />
-    <attr name="colorSecondaryShadow" format="color" />
+    <attr name="themeBackground" format="reference" />
+    <attr name="colorPrimaryShadow" format="color|reference" />
+    <attr name="colorSecondaryShadow" format="color|reference" />
 </resources>

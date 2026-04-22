@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -16,7 +15,6 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import nl.dionsegijn.konfetti.core.PartyFactory;
@@ -33,11 +31,14 @@ public class ScriptPlayerActivity extends AppCompatActivity {
 
     ArrayList<String> steps;
     int currentStep = 0;
+    int scriptId;
+    String scriptTitle;
     boolean isCompleted = false;
 
-    TextToSpeech tts;
+    ElevenLabsManager elevenLabs = new ElevenLabsManager();
     SharedPreferences prefs;
     KonfettiView konfettiView;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(LocaleHelper.setLocale(newBase));
@@ -61,7 +62,8 @@ public class ScriptPlayerActivity extends AppCompatActivity {
         konfettiView = findViewById(R.id.confettiView);
 
         prefs = getSharedPreferences("settings", MODE_PRIVATE);
-        int scriptId = getIntent().getIntExtra("scriptId", -1);
+        scriptId = getIntent().getIntExtra("scriptId", -1);
+        scriptTitle = getScriptTitle(scriptId);
 
         steps = new ArrayList<>();
         try (DBHelper db = new DBHelper(this);
@@ -94,7 +96,7 @@ public class ScriptPlayerActivity extends AppCompatActivity {
         btnPrevFrame.setOnClickListener(v -> {
             if (isCompleted) {
                 isCompleted = false;
-                btnNextText.setText(getString(R.string.next));//btnNextText.setText("NEXT");
+                btnNextText.setText(getString(R.string.next));
                 showStep();
             } else if (currentStep > 0) {
                 currentStep--;
@@ -103,13 +105,17 @@ public class ScriptPlayerActivity extends AppCompatActivity {
         });
 
         btnClose.setOnClickListener(v -> finish());
+        showStep();
+    }
 
-        tts = new TextToSpeech(this, status -> {
-            if (status == TextToSpeech.SUCCESS) {
-                tts.setLanguage(Locale.US);
-                showStep();
+    private String getScriptTitle(int id) {
+        try (DBHelper db = new DBHelper(this);
+             Cursor cursor = db.getScripts()) {
+            while (cursor.moveToNext()) {
+                if (cursor.getInt(0) == id) return cursor.getString(1);
             }
-        });
+        }
+        return "Script";
     }
 
     private void showStep() {
@@ -123,31 +129,30 @@ public class ScriptPlayerActivity extends AppCompatActivity {
 
         btnPrevFrame.setVisibility(currentStep == 0 ? View.INVISIBLE : View.VISIBLE);
         
-        applyEmotionalCoding(text);
+        updateStepImage(scriptTitle, currentStep);
 
-        if (tts != null && prefs.getBoolean("sound", true)) {
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        if (prefs.getBoolean("sound", true)) {
+            elevenLabs.speak(this, text);
         }
     }
 
-    private void applyEmotionalCoding(String text) {
-        String lower = text.toLowerCase();
-        if (lower.contains("smile") || lower.contains("happy") || lower.contains("friend")) {
-            imgStep.setColorFilter(getResources().getColor(android.R.color.holo_orange_light, getTheme()));
-        } else if (lower.contains("attention") || lower.contains("look") || lower.contains("calm")) {
-            imgStep.setColorFilter(getResources().getColor(android.R.color.holo_blue_light, getTheme()));
-        } else {
-            imgStep.setColorFilter(getResources().getColor(android.R.color.holo_green_light, getTheme()));
+    private void updateStepImage(String scriptName, int stepIndex) {
+        int imageRes = android.R.drawable.ic_menu_search;
+        String lowerScript = scriptName.toLowerCase();
+        
+        if (lowerScript.contains("say hello")) {
+            int[] helloImages = {R.drawable.look_jpeg, R.drawable.smile_webp, R.drawable.hello_avif, R.drawable.ask_jpeg};
+            if (stepIndex < helloImages.length) imageRes = helloImages[stepIndex];
         }
+        
+        imgStep.setImageResource(imageRes);
+        imgStep.setColorFilter(null);
     }
 
     private void completeScript() {
         isCompleted = true;
-       // txtStep.setText("SUPER STAR!");
-       // btnNextText.setText("FINISH");
         txtStep.setText(getString(R.string.script_complete));
         btnNextText.setText(getString(R.string.finish));
-
         progressIndicator.setProgress(100);
 
         if (konfettiView != null) {
@@ -165,7 +170,6 @@ public class ScriptPlayerActivity extends AppCompatActivity {
         new Thread(() -> {
             for (int i = 3; i >= 1; i--) {
                 int finalI = i;
-                //runOnUiThread(() -> txtTransition.setText("Next part in... " + finalI));
                 runOnUiThread(() -> txtTransition.setText(getString(R.string.script_transition, finalI)));
 
                 try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
@@ -176,14 +180,5 @@ public class ScriptPlayerActivity extends AppCompatActivity {
                 showStep();
             });
         }).start();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
-        }
-        super.onDestroy();
     }
 }

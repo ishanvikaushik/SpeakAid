@@ -1,5 +1,5 @@
 package com.example.speakaid;
-
+import com.bumptech.glide.Glide;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -14,6 +14,7 @@ import android.os.Vibrator;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,6 +37,7 @@ public class GroundingActivity extends AppCompatActivity {
         txtBreatheState = findViewById(R.id.txtBreatheState);
         btnSoundToggle = findViewById(R.id.btnSoundToggle);
         ImageButton btnBack = findViewById(R.id.btnBack);
+
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -86,22 +88,44 @@ public class GroundingActivity extends AppCompatActivity {
 
     private void toggleSound() {
         if (isPlaying) {
-            if (mediaPlayer != null) {
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = null;
-            }
-            btnSoundToggle.setImageResource(android.R.drawable.ic_lock_silent_mode_off);
+            stopSound();
         } else {
-            // Using a default ringtone as a placeholder for calming sound
-            mediaPlayer = MediaPlayer.create(this, android.provider.Settings.System.DEFAULT_NOTIFICATION_URI);
+            playSound();
+        }
+        isPlaying = !isPlaying;
+    }
+
+    private void playSound() {
+        // If it's already playing or initialized, stop it first to prevent duplicates
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+
+        // Try to load
+        int resId = getResources().getIdentifier("rain_bg", "raw", getPackageName());
+        if (resId != 0) {
+            mediaPlayer = MediaPlayer.create(this, resId);
             if (mediaPlayer != null) {
                 mediaPlayer.setLooping(true);
                 mediaPlayer.start();
+                btnSoundToggle.setImageResource(android.R.drawable.ic_lock_silent_mode);
+                android.util.Log.d("AudioDebug", "Started playing sound.");
             }
-            btnSoundToggle.setImageResource(android.R.drawable.ic_lock_silent_mode);
+        } else {
+            android.util.Log.e("AudioDebug", "Could not find resource.");
         }
-        isPlaying = !isPlaying;
+    }
+
+    private void stopSound() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
+            btnSoundToggle.setImageResource(android.R.drawable.ic_lock_silent_mode_off);
+            android.util.Log.d("AudioDebug", "Stopped playing sound.");
+        }
     }
 
     @Override

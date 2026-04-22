@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground"
+    android:background="?attr/themeBackground"
     android:fitsSystemWindows="true">
 
     <!-- Top Navigation & Header -->
@@ -126,7 +126,6 @@
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
 
-                        <!-- INCREASED SIZE FOR AWAKE/BLINK -->
                         <ImageView
                             android:id="@+id/imgStatusMascot"
                             android:layout_width="100dp"
@@ -204,7 +203,7 @@
                 android:alignmentMode="alignMargins"
                 android:columnOrderPreserved="false">
 
-                <!-- INCREASED CARD SIZES AND IMAGE SIZES -->
+                <!-- ROUTINES -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnRoutines"
                     android:layout_width="0dp"
@@ -217,7 +216,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#E3F2FD"
+                        android:background="@drawable/gradient_routine"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="12dp">
@@ -230,7 +229,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="ROUTINES"
-                            android:textColor="#1565C0"
+                            android:textColor="@android:color/white"
                             android:textSize="17sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-black"
@@ -238,6 +237,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- SCRIPTS -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnScripts"
                     android:layout_width="0dp"
@@ -250,7 +250,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#E8F5E9"
+                        android:background="@drawable/gradient_scripts"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="12dp">
@@ -263,7 +263,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="SCRIPTS"
-                            android:textColor="#2E7D32"
+                            android:textColor="@android:color/white"
                             android:textSize="17sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-black"
@@ -271,6 +271,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- SPEAK -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnCommunicate"
                     android:layout_width="0dp"
@@ -283,7 +284,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#F3E5F5"
+                        android:background="@drawable/gradient_speak"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="12dp">
@@ -296,7 +297,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="SPEAK"
-                            android:textColor="#6A1B9A"
+                            android:textColor="@android:color/white"
                             android:textSize="17sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-black"
@@ -304,6 +305,7 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- PLAY -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnSensory"
                     android:layout_width="0dp"
@@ -316,7 +318,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#FFF3E0"
+                        android:background="@drawable/gradient_play"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="12dp">
@@ -329,7 +331,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="PLAY"
-                            android:textColor="#E65100"
+                            android:textColor="@android:color/white"
                             android:textSize="17sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-black"
@@ -352,7 +354,8 @@
                 app:iconSize="32dp"
                 app:iconPadding="16dp"
                 app:iconGravity="textStart"
-                app:backgroundTint="#FF4081"
+                app:backgroundTint="@null"
+                android:background="@drawable/gradient_help"
                 android:elevation="6dp"/>
 
             <LinearLayout

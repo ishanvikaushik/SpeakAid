@@ -1,7 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.Speakaid" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- High-Fidelity Palette (Themeable) -->
         <item name="colorPrimary">@color/duo_blue</item>
         <item name="colorPrimaryShadow">@color/duo_blue_shadow</item>
         <item name="colorSecondary">@color/duo_green</item>
@@ -9,37 +7,36 @@
         <item name="android:windowBackground">@color/background_light</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorOnSecondary">@color/white</item>
-
-        <!-- Typography -->
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="textAppearanceHeadlineLarge">@style/HeadlineLarge</item>
         <item name="textAppearanceBodyLarge">@style/BodyLarge</item>
+        <item name="themeBackground">@drawable/theme_background_gradient</item>
     </style>
 
-    <style name="Theme.Speakaid" parent="Base.Theme.Speakaid" />
+    <style name="Theme.Speakaid" parent="Base.Theme.Speakaid">
+        <item name="themeBackground">@android:color/white</item>
+    </style>
+
+    <style name="Theme.Speakaid.Dashboard" parent="Theme.Speakaid">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 
     <style name="Theme.Speakaid.Lavender" parent="Base.Theme.Speakaid">
-        <item name="colorPrimary">@color/lavender_primary</item>
-        <item name="colorPrimaryShadow">@color/lavender_shadow</item>
-        <item name="colorSecondary">@color/lavender_primary</item>
-        <item name="colorSecondaryShadow">@color/lavender_shadow</item>
-        <item name="android:windowBackground">@color/lavender_bg</item>
+        <item name="colorPrimary">#D1C4E9</item>
+        <item name="colorSecondary">#E1BEE7</item>
+        <item name="themeBackground">@drawable/theme_background_gradient</item>
     </style>
 
     <style name="Theme.Speakaid.Ocean" parent="Base.Theme.Speakaid">
-        <item name="colorPrimary">@color/ocean_primary</item>
-        <item name="colorPrimaryShadow">@color/ocean_shadow</item>
-        <item name="colorSecondary">@color/ocean_primary</item>
-        <item name="colorSecondaryShadow">@color/ocean_shadow</item>
-        <item name="android:windowBackground">@color/ocean_bg</item>
+        <item name="colorPrimary">#B3E5FC</item>
+        <item name="colorSecondary">#81D4FA</item>
+        <item name="themeBackground">@drawable/theme_background_gradient</item>
     </style>
 
     <style name="Theme.Speakaid.Sunset" parent="Base.Theme.Speakaid">
-        <item name="colorPrimary">@color/sunset_primary</item>
-        <item name="colorPrimaryShadow">@color/sunset_shadow</item>
-        <item name="colorSecondary">@color/sunset_primary</item>
-        <item name="colorSecondaryShadow">@color/sunset_shadow</item>
-        <item name="android:windowBackground">@color/sunset_bg</item>
+        <item name="colorPrimary">#FFCC80</item> <!-- Soft Orange -->
+        <item name="colorSecondary">#FFF59D</item> <!-- Soft Yellow -->
+        <item name="themeBackground">@drawable/theme_background_gradient</item>
     </style>
 
     <style name="HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">

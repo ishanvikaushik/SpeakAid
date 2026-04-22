@@ -39,9 +39,13 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         prefs = getSharedPreferences("settings", MODE_PRIVATE);
-        ThemeHelper.applyTheme(this);
+        // Apply the custom theme with transparent window background
+        setTheme(R.style.Theme_Speakaid_Dashboard);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        // The background is now set in activity_dashboard.xml and windowBackground is transparent
+        // No need for programmatic background setting here anymore.
 
         txtQuote = findViewById(R.id.txtQuote);
         imgMascot = findViewById(R.id.imgMascot);
@@ -117,7 +121,7 @@ public class DashboardActivity extends AppCompatActivity {
                 Toast.makeText(this, "Incorrect Passcode", Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("Cancel", null);
+        builder.setNegativeButton("CANCEL", null);
         builder.show();
     }
 

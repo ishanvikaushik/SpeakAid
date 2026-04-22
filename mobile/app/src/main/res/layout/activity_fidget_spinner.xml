@@ -49,11 +49,15 @@
             android:layout_marginTop="32dp"
             android:fontFamily="sans-serif-black"/>
 
+        <!-- Smaller spinner: Removed elevation/background properties that might cause clipping -->
         <com.example.speakaid.FidgetSpinnerView
             android:id="@+id/fidgetSpinner"
-            android:layout_width="350dp"
-            android:layout_height="350dp"
-            android:layout_centerInParent="true"/>
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:clipChildren="false"
+            android:clipToPadding="false" />
 
         <TextView
             android:layout_width="wrap_content"

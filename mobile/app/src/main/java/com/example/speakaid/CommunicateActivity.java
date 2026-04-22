@@ -20,6 +20,7 @@ import java.util.Locale;
 public class CommunicateActivity extends AppCompatActivity {
 
     private TextToSpeech tts;
+    private ElevenLabsManager elevenLabs = new ElevenLabsManager();
     private GridLayout gridLayout;
     private ImageButton btnBack;
     private DBHelper db;
@@ -98,9 +99,8 @@ public class CommunicateActivity extends AppCompatActivity {
     }
 
     private void speak(String text) {
-        if (tts != null) {
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
-        }
+        if (tts != null) tts.stop();
+        elevenLabs.speak(this, text);
     }
 
     @Override

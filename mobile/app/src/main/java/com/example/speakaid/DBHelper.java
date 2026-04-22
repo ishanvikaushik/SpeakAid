@@ -8,13 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "speakaid.db";
-    private static final int DB_VERSION = 7; // Incremented for ChatHistory
+    private static final int DB_VERSION = 8; // Incremented for Laundry migration
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -30,7 +29,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE DailyBadges (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT UNIQUE, badgeType TEXT)");
         db.execSQL("CREATE TABLE Badges (id INTEGER PRIMARY KEY AUTOINCREMENT, routineTitle TEXT UNIQUE, count INTEGER DEFAULT 0)");
         
-        // Chat History Table
         db.execSQL("CREATE TABLE ChatHistory (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "roomId TEXT, " +
@@ -38,6 +36,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 "senderName TEXT, " +
                 "isSent INTEGER, " +
                 "timestamp LONG)");
+
+        // Pre-populate Laundry Routine
+        long laundryId = insertRoutine(db, "Laundry");
+        insertStep(db, laundryId, "Sort Clothes", 0);
+        insertStep(db, laundryId, "Add Detergent", 1);
+        insertStep(db, laundryId, "Start Machine", 2);
     }
 
     @Override
@@ -54,6 +58,28 @@ public class DBHelper extends SQLiteOpenHelper {
                     "isSent INTEGER, " +
                     "timestamp LONG)");
         }
+        if (oldVersion < 8) {
+             long laundryId = insertRoutine(db, "Laundry");
+             insertStep(db, laundryId, "Sort Clothes", 0);
+             insertStep(db, laundryId, "Add Detergent", 1);
+             insertStep(db, laundryId, "Start Machine", 2);
+        }
+    }
+
+    // --- Helpers for onCreate/onUpgrade ---
+    private long insertRoutine(SQLiteDatabase db, String title) {
+        ContentValues values = new ContentValues();
+        values.put("title", title);
+        values.put("lastStep", 0);
+        return db.insert("Routine", null, values);
+    }
+
+    private void insertStep(SQLiteDatabase db, long routineId, String title, int order) {
+        ContentValues values = new ContentValues();
+        values.put("routineId", routineId);
+        values.put("title", title);
+        values.put("stepOrder", order);
+        db.insert("Step", null, values);
     }
 
     // --- Chat Methods ---
@@ -71,6 +97,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getChatHistory(String roomId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM ChatHistory WHERE roomId = ? ORDER BY timestamp ASC", new String[]{roomId});
+    }
+
+    public Cursor getAllChatHistory() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM ChatHistory ORDER BY timestamp ASC", null);
     }
 
     // --- Routine Methods ---
@@ -231,5 +262,9 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("lastStep", 0);
         values.put("completedDate", (String)null);
         db.update("Routine", values, null, null);
+        
+        // Reset badges and daily stars
+        db.execSQL("DELETE FROM Badges");
+        db.execSQL("DELETE FROM DailyBadges");
     }
 }

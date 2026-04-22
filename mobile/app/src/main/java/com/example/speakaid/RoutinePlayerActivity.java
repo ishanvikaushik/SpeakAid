@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -39,7 +38,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
     ImageView imgStep, btnClose;
     
     boolean isCompleted = false;
-    TextToSpeech tts;
+    ElevenLabsManager elevenLabs = new ElevenLabsManager();
     int currentStep = 0;
     List<String> steps;
     int routineId;
@@ -123,13 +122,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         });
 
         btnClose.setOnClickListener(v -> finish());
-
-        tts = new TextToSpeech(this, status -> {
-            if (status == TextToSpeech.SUCCESS) {
-                tts.setLanguage(Locale.US);
-                showStep();
-            }
-        });
+        showStep();
     }
 
     private String getRoutineTitle(int id) {
@@ -160,22 +153,28 @@ public class RoutinePlayerActivity extends AppCompatActivity {
 
         btnPrevFrame.setVisibility(currentStep == 0 ? View.INVISIBLE : View.VISIBLE);
         
-        applyEmotionalCoding(text);
+        updateStepImage(routineTitle, currentStep);
 
-        if (tts != null && prefs.getBoolean("sound", true)) {
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        if (prefs.getBoolean("sound", true)) {
+            elevenLabs.speak(this, text);
         }
     }
 
-    private void applyEmotionalCoding(String text) {
-        String lower = text.toLowerCase();
-        if (lower.contains("happy") || lower.contains("smile") || lower.contains("good")) {
-            imgStep.setColorFilter(getResources().getColor(android.R.color.holo_orange_light, getTheme()));
-        } else if (lower.contains("calm") || lower.contains("wait") || lower.contains("breathe")) {
-            imgStep.setColorFilter(getResources().getColor(android.R.color.holo_blue_light, getTheme()));
-        } else {
-            imgStep.setColorFilter(getResources().getColor(android.R.color.holo_green_light, getTheme()));
+    private void updateStepImage(String routineName, int stepIndex) {
+        int imageRes = android.R.drawable.ic_menu_today;
+        String lowerRoutine = routineName.toLowerCase();
+        
+        if (lowerRoutine.contains("morning")) {
+            // Replace these with your actual drawable names
+            int[] morningImages = {R.drawable.wake_up_jpeg, R.drawable.brush_jpeg, R.drawable.dressed_jpeg};
+            if (stepIndex < morningImages.length) imageRes = morningImages[stepIndex];
+        } else if (lowerRoutine.contains("laundry")) {
+            int[] laundryImages = {R.drawable.laundry_sort, R.drawable.laundry_detergent, R.drawable.laundry_start};
+            if (stepIndex < laundryImages.length) imageRes = laundryImages[stepIndex];
         }
+        
+        imgStep.setImageResource(imageRes);
+        imgStep.setColorFilter(null);
     }
 
     private void completeRoutine() {
@@ -209,8 +208,7 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         
         txtName.setText(badgeName);
 
-        // MAP IMAGES TO POPUP
-        int badgeRes = R.drawable.ic_yes; // Default
+        int badgeRes = R.drawable.ic_yes;
         String lowerName = badgeName.toLowerCase();
 
         if (lowerName.contains("morning")) badgeRes = R.drawable.morning;
@@ -220,11 +218,16 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         else badgeRes = R.drawable.custom;
 
         imgBadge.setImageResource(badgeRes);
-        imgBadge.setColorFilter(null); // Ensure no gray tint in the win popup
+        imgBadge.setColorFilter(null);
 
         AlertDialog dialog = new AlertDialog.Builder(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen)
                 .setView(popupView)
                 .create();
+
+        popupView.setOnClickListener(v -> {
+            dialog.dismiss();
+            finish(); 
+        });
 
         dialog.show();
 
@@ -233,8 +236,6 @@ public class RoutinePlayerActivity extends AppCompatActivity {
         animator.setDuration(1200);
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.start();
-
-        popupView.setOnClickListener(v -> dialog.dismiss());
     }
 
     private void startTransition(int nextIndex, String nextStep) {
@@ -251,11 +252,5 @@ public class RoutinePlayerActivity extends AppCompatActivity {
                 showStep();
             });
         }).start();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (tts != null) { tts.stop(); tts.shutdown(); }
-        super.onDestroy();
     }
 }
